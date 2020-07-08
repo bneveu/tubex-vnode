@@ -20,17 +20,13 @@ void ivp21(int n, var_type*yp, const var_type*y, var_type t, void*param)
 }
 
 
-void contract(TubeVector& x, double& t0, bool incremental)
+void contract(TubeVector& x, double t0, bool incremental)
 {
-
     // Differential equation
-
 
     int n=2;
     double t=0;
     double tend=5;
-
-
 
     AD *ad=new FADBAD_AD(n,ivp21,ivp21);
     CtcVnodelp c;
@@ -45,7 +41,7 @@ int main()
     t1=clock();//sert à calculer le temps d'exécution
     TFunction f("x1", "x2" ,"(-x2+0.1*x1*(1-x1^2-x2^2);x1+0.1*x2*(1-x1^2-x2^2))");    
     Interval domain(0.,5.);
-    //  TubeVector x(domain,1e-2, 2);
+
     TubeVector x(domain, 2);
     IntervalVector v(2);
     v[0]=Interval(0.7,1.3);
@@ -54,7 +50,6 @@ int main()
     x.set(v, 0.); // ini
 
     double eps=0.15;
-    //    double eps=1.0;
 
    /* =========== SOLVER =========== */
     Vector epsilon(2, eps);

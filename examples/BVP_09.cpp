@@ -19,7 +19,7 @@ void bvp09(int n, var_type*yp, const var_type*y, var_type t, void*param)
 }
 
 
-void contract(TubeVector& x, double& t0, bool incremental)
+void contract(TubeVector& x, double t0, bool incremental)
 {
     // Differential equation
     int n=2;
