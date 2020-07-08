@@ -43,9 +43,9 @@ namespace tubex {
             initial_time_index=count_index;
 
         while(s_x!=NULL){
-            time_dis.emplace_back(s_x->domain().ub());
+            time_dis.emplace_back(s_x->tdomain().ub());
             count_index++;
-            if(s_x->domain().ub()==initial_time)
+            if(s_x->tdomain().ub()==initial_time)
                 initial_time_index=count_index;;
             s_x = s_x->next_slice();
         }

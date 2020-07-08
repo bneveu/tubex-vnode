@@ -35,7 +35,7 @@ void contract(TubeVector& x, double& t0, bool incremental)
 int main()
 
 {   
-  tubex::Function f("y1", "y2", "(-0.7*y1 ; 0.7*y1 - (ln(2)/5.)*y2)");
+  TFunction f("y1", "y2", "(-0.7*y1 ; 0.7*y1 - (ln(2)/5.)*y2)");
   float temps;
     clock_t t1, t2;
     t1=clock();//sert à calculer le temps d'exécution
@@ -47,7 +47,7 @@ int main()
 
 
     // Boundary condition:
-    IntervalVector init = x(x.domain().lb());
+    IntervalVector init = x(x.tdomain().lb());
     init[0] = Interval(1.25);
     // init[1] = Interval(1.1,1.3);
     //init[1]=Interval(-0.413732, -0.372333);

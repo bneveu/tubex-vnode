@@ -41,7 +41,7 @@ int main()
 {    float temps;
     clock_t t1, t2;
     t1=clock();//sert à calculer le temps d'exécution
-    tubex::Function f("x1", "x2" ,"(x2;x2/0.2)");
+    TFunction f("x1", "x2" ,"(x2;x2/0.2)");
     Interval domain(0.,1.);
     TubeVector x(domain, 2);
     IntervalVector v(2);

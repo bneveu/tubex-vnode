@@ -22,7 +22,7 @@ void bvp18(int n, var_type*yp, const var_type*y, var_type t, void*param)
 void contract(TubeVector& x, double& t0, bool incremental)
 {
     //ibex-tubex eq diff
-    tubex::Function f("x1", "x2" ,"(x2;-exp(x1))");
+    TFunction f("x1", "x2" ,"(x2;-exp(x1))");
 
     // vnode Differential equation
 
@@ -42,7 +42,7 @@ void contract(TubeVector& x, double& t0, bool incremental)
 
         CtcDeriv ctc_deriv;
         ctc_deriv.set_fast_mode(true);
-        ctc_deriv.contract(x, v, FORWARD | BACKWARD);
+        ctc_deriv.contract(x, v, TimePropag::FORWARD | TimePropag::BACKWARD);
     }
 }
 

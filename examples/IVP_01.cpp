@@ -42,7 +42,7 @@ int main()
 
 {   
 
-  tubex::Function f("x", "-x");
+  TFunction f("x", "-x");
  float temps;
     clock_t t1, t2;
     t1=clock();//sert à calculer le temps d'exécution

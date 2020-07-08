@@ -43,7 +43,7 @@ int main()
 {   float temps;
     clock_t t1, t2;
     t1=clock();//sert à calculer le temps d'exécution
-    tubex::Function f("x1", "x2" ,"(-x2+0.1*x1*(1-x1^2-x2^2);x1+0.1*x2*(1-x1^2-x2^2))");    
+    TFunction f("x1", "x2" ,"(-x2+0.1*x1*(1-x1^2-x2^2);x1+0.1*x2*(1-x1^2-x2^2))");    
     Interval domain(0.,5.);
     //  TubeVector x(domain,1e-2, 2);
     TubeVector x(domain, 2);

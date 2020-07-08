@@ -3,7 +3,7 @@
 
 #include "ibex.h"
 #include "tubex.h"
-#include "tubex_Ctc.h"
+#include "tubex_DynCtc.h"
 #include "tubex_Slice.h"
 #include "vnode.h"
 #include <vector>
@@ -16,7 +16,7 @@ const int ord (11);
 namespace tubex {
     typedef std::vector<std::pair<double, ibex::IntervalVector>> Vstate;
 
-    class CtcVnodelp : public Ctc {
+    class CtcVnodelp : public DynCtc {
     public:
 
         CtcVnodelp();

@@ -59,7 +59,7 @@ int main()
     t1=clock();//sert à calculer le temps d'exécution
     
     /* =========== PARAMETERS =========== */
-    tubex::Function f("x", "x");
+    TFunction f("x", "x");
     int n = 1;
 
     Vector epsilon(n,0.0005);
@@ -67,8 +67,8 @@ int main()
     Interval domain(0.,1.);
     //    TubeVector x(domain, n, Interval (-1.e100,1.e100));
     TubeVector x(domain, n);
-    TrajectoryVector truth1(domain, tubex::Function("exp(t)/sqrt(1+exp(2))"));
-    TrajectoryVector truth2(domain, tubex::Function("-exp(t)/sqrt(1+exp(2))"));
+    TrajectoryVector truth1(domain, TFunction("exp(t)/sqrt(1+exp(2))"));
+    TrajectoryVector truth2(domain, TFunction("-exp(t)/sqrt(1+exp(2))"));
 
     /* =========== SOLVER =========== */
 

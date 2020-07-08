@@ -38,13 +38,13 @@ void contract(TubeVector& x, double& t0, bool incremental)
 }
 void contract_ctcderiv(TubeVector& x, double& t0, bool incremental)
 {
-    tubex::Function f("x", "-x^2");
+    TFunction f("x", "-x^2");
 
     CtcPicard ctc_picard;
     ctc_picard.preserve_slicing(true);
 
     if (x.volume() > 1.e300)
-        ctc_picard.contract(f, x, FORWARD );
+        ctc_picard.contract(f, x, TimePropag::FORWARD );
 
     if (x.volume() < 1.e300){
         /*
@@ -58,9 +58,9 @@ void contract_ctcderiv(TubeVector& x, double& t0, bool incremental)
         //    CtcDynCidGuess* ctc_dyncid = new CtcDynCidGuess(f);
         ctc_dyncid->set_fast_mode(true);
         CtcIntegration ctc_integration(f,ctc_dyncid);
-        ctc_integration.contract(x,v,x[0].domain().lb(),FORWARD) ;
+        ctc_integration.contract(x,v,x[0].tdomain().lb(),TimePropag::FORWARD) ;
         v = f.eval_vector(x);
-        ctc_integration.contract(x,v,x[0].domain().ub(),BACKWARD) ;
+        ctc_integration.contract(x,v,x[0].tdomain().ub(),TimePropag::BACKWARD) ;
         delete ctc_dyncid;
 
 

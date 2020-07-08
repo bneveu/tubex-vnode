@@ -1,7 +1,7 @@
 #include "CtcVnodelp.h"
 //#include <vector>
 namespace tubex {
-    CtcVnodelp::CtcVnodelp() : Ctc() {
+    CtcVnodelp::CtcVnodelp() : DynCtc() {
     }//ctcvnode
 
 	    void CtcVnodelp::fill_state_vector( Tube &x,vector<double> &time_gate ,vector<ibex::IntervalVector>& si, const int& i){
@@ -9,7 +9,7 @@ namespace tubex {
         int k=0;
         while (x_slice!=NULL){
             Interval outgate=x_slice->output_gate();
-            Interval dom=x_slice->domain();
+            Interval dom=x_slice->tdomain();
             if(k==0) {
                 Interval ingate = x_slice->input_gate();
                 si[k][i] =ingate;
@@ -29,7 +29,7 @@ namespace tubex {
     void CtcVnodelp::Contract(vnodelp::AD *ad, double t, double tend, int n, Tube &x, double t0,bool incremental) {
 
         ibex::Interval domain = ibex::Interval(t, tend);
-        TubeVector y(domain);
+        TubeVector y(domain,n);
         y[0] = x;
         Contract( ad, t, tend, n, y,t0, incremental);
         x=y[0];

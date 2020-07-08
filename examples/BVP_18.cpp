@@ -35,7 +35,7 @@ void contract(TubeVector& x, double& t0, bool incremental)
 }
 
 int main() {
-  tubex::Function f("x1", "x2" ,"(x2;-exp(x1))");
+  TFunction f("x1", "x2" ,"(x2;-exp(x1))");
     float temps;
     clock_t t1, t2;
     t1=clock();//sert à calculer le temps d'exécution
@@ -79,7 +79,7 @@ int main() {
     solver.set_refining_mode(0);
     solver.set_stopping_mode(1);
     solver.set_contraction_mode(4);
-    //    list<TubeVector> l_solutions = solver.solve(x, f, &contract);
+    //list<TubeVector> l_solutions = solver.solve(x, f, &contract);
     list<TubeVector> l_solutions = solver.solve(x, &contract);
     cout << "nb sol " << l_solutions.size() << endl;
     if(l_solutions.size()>0){

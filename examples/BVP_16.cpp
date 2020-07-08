@@ -42,7 +42,7 @@ int main()
 {    float temps;
     clock_t t1, t2;
     t1=clock();//sert à calculer le temps d'exécution
-    tubex::Function f("x1", "x2" ,"(-x2;x1)");
+    TFunction f("x1", "x2" ,"(-x2;x1)");
     /* =========== PARAMETERS =========== */
     double pi=M_PI;
     Tube::enable_syntheses(false);

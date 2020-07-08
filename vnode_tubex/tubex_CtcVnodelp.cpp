@@ -6,7 +6,7 @@ using namespace std;
 using namespace ibex;
 
 namespace tubex {
-    CtcVnodelp::CtcVnodelp() : Ctc() {
+    CtcVnodelp::CtcVnodelp() : DynCtc() {
 
     }//ctcvnodelp
 
@@ -38,7 +38,7 @@ namespace tubex {
         }//for
         // cout <<"["<<t<<","<<tend<<"] " << "Forward step " <<endl;
         //forward step
-        TubeVector fwd_x(x.domain(),n);
+        TubeVector fwd_x(x.tdomain(),n);
         fwd_x.set(state[0].second, state[0].first);
         int fwd(0);
         for( fwd; fwd<state.size()-1; fwd++){
@@ -180,7 +180,7 @@ namespace tubex {
 
         // cout << "Backward loop : "<<endl;
         //bwd
-        TubeVector bwd_x(x.domain(),n);
+        TubeVector bwd_x(x.tdomain(),n);
         bwd_x.set(state[state.size()-1].second, state[state.size()-1].first);
         int bwd(state.size()-1);
         for( bwd; bwd>0; bwd--){
@@ -330,7 +330,7 @@ namespace tubex {
         int k=0;
         while (x_slice!=NULL){
             Interval outgate=x_slice->output_gate();
-            Interval dom=x_slice->domain();
+            Interval dom=x_slice->tdomain();
             if(k==0) {
                 Interval ingate = x_slice->input_gate();
                 si[k][i] =ingate;
