@@ -19,7 +19,7 @@ void exp(int n, var_type*yp, const var_type*y, var_type t, void*param)
 }
 
 
-void contract(TubeVector& x, doubleq t0, bool incremental)
+void contract(TubeVector& x, double t0, bool incremental)
 {
     // Boundary constraints
     Variable vx0, vx1;
@@ -94,17 +94,18 @@ int main()
 
     solver.set_refining_fxpt_ratio(2);
     solver.set_propa_fxpt_ratio(0.);
-    //solver.set_var3b_fxpt_ratio(0.99);
-    solver.set_var3b_fxpt_ratio(-1);
+    solver.set_var3b_fxpt_ratio(0.99);
+    //solver.set_var3b_fxpt_ratio(-1);
     solver.set_var3b_propa_fxpt_ratio(0.99);
   //  solver.set_var3b_timept(0);
     solver.set_trace(1);
-    //    solver.set_max_slices(400);
-     solver.set_max_slices(1);
+        solver.set_max_slices(400);
+    //solver.set_max_slices(1);
     solver.set_refining_mode(0);
-    solver.set_stopping_mode(1);
+    //solver.set_stopping_mode(1);
     solver.set_bisection_timept(3);
     solver.set_contraction_mode(2);
+    solver.set_var3b_external_contraction(false);
     //list<TubeVector> l_solutions = solver.solve(x, f, &contract);
     list<TubeVector> l_solutions = solver.solve(x, &contract);
     cout << l_solutions.front()(domain.ub()).diam() << endl;

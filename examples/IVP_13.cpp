@@ -19,7 +19,7 @@ void bvp13(int n, var_type*yp, const var_type*y, var_type t, void*param)
 }
 
 
-void contract(TubeVector x, double& t0, bool incremental)
+void contract(TubeVector& x, double t0, bool incremental)
 {
 
     // Differential equation
@@ -70,8 +70,8 @@ int main()
     solver.set_contraction_mode(2);
     solver.set_stopping_mode(1);
     // list<TubeVector> l_solutions = solver.solve(x, f);
-    // list<TubeVector> l_solutions = solver.solve(x, f,&contract);
-   list<TubeVector> l_solutions = solver.solve(x,&contract);
+     list<TubeVector> l_solutions = solver.solve(x, f,&contract);
+    //   list<TubeVector> l_solutions = solver.solve(x,&contract);
     cout << l_solutions.front() << endl;
     cout << "nb sol " << l_solutions.size() << endl;
     double t_max_diam;

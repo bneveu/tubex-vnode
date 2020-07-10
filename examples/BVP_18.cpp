@@ -52,12 +52,13 @@ int main() {
     v[0]=Interval(0.,0.);
     v[1]=Interval(-20.,20.);
     x.set(v,1.);
-    /*
+    
     double eps0=5.e-2;
     double eps1=5.e-2;
-    */
+    /*
     double eps0=0.005;
     double eps1=0.005;
+    */
     /* =========== SOLVER =========== */
     Vector epsilon(2);
     epsilon[0]=eps0;
@@ -67,21 +68,22 @@ int main() {
 
     solver.set_refining_fxpt_ratio(2.0);
     solver.set_propa_fxpt_ratio(0.99);
-    //    solver.set_var3b_fxpt_ratio(0.999);
-    solver.set_var3b_fxpt_ratio(-1);
+     solver.set_var3b_fxpt_ratio(0.999);
+    //solver.set_var3b_fxpt_ratio(-1);
     solver.set_var3b_propa_fxpt_ratio(0.999);
-    solver.set_var3b_external_contraction(false);
+    solver.set_var3b_external_contraction(true);
    // solver.set_var3b_timept(0);
     solver.set_trace(1);
-    // solver.set_max_slices(2000);
-    solver.set_max_slices(1);
+    solver.set_max_slices(5000);
+    //solver.set_max_slices(1);
     solver.set_bisection_timept(3);
     solver.set_refining_mode(0);
-    solver.set_stopping_mode(1);
-    solver.set_contraction_mode(4);
-    //list<TubeVector> l_solutions = solver.solve(x, f, &contract);
-    list<TubeVector> l_solutions = solver.solve(x, &contract);
-    cout << "nb sol " << l_solutions.size() << endl;
+    solver.set_stopping_mode(0);
+    solver.set_contraction_mode(2);
+    solver.set_var3b_external_contraction(true);
+    //    list<TubeVector> l_solutions = solver.solve(x, f, &contract);
+     list<TubeVector> l_solutions = solver.solve(x, &contract);
+       cout << "nb sol " << l_solutions.size() << endl;
     if(l_solutions.size()>0){
     double t_max_diam;
     cout << l_solutions.front()<<" ti-> " <<l_solutions.front()(domain.lb()) << " tf -> "<< l_solutions.front()(domain.ub()) <<" max diam : (" <<l_solutions.front()[0].max_gate_diam(t_max_diam)<<", "<<l_solutions.front()[1].max_gate_diam(t_max_diam)<< ")" << " volume :  "<< l_solutions.front().volume()<<" ti (diam) -> " <<l_solutions.front()(domain.lb()).diam() << " tf (diam) -> "<< l_solutions.front()(domain.ub()).diam() << endl;

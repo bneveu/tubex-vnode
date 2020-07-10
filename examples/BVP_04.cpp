@@ -82,13 +82,13 @@ int main()
 
   //  solver.set_var3b_timept(0);
     solver.set_trace(1);
-    solver.set_max_slices(2000);
+    solver.set_max_slices(5000);
     //solver.set_max_slices(1);
     solver.set_refining_mode(0);
     solver.set_bisection_timept(3);
     solver.set_contraction_mode(2);
     solver.set_stopping_mode(0);
-
+    solver.set_var3b_external_contraction(false);
     //list<TubeVector> l_solutions = solver.solve(x, &contract);
     list<TubeVector> l_solutions = solver.solve(x, f, &contract);
     cout << l_solutions.front()(domain.ub()).diam() << endl;

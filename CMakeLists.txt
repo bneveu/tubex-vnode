@@ -78,7 +78,7 @@ add_executable(14 examples/IVP_14.cpp vnode_tubex/CtcVnodelp.cpp vnode_tubex/Ctc
 add_executable(19 examples/IVP_19.cpp vnode_tubex/CtcVnodelp.cpp vnode_tubex/CtcVnodelp.h)
 add_executable(20 examples/IVP_20.cpp vnode_tubex/CtcVnodelp.cpp vnode_tubex/CtcVnodelp.h)
 add_executable(21 examples/IVP_21.cpp vnode_tubex/CtcVnodelp.cpp vnode_tubex/CtcVnodelp.h)
-add_executable(12t examples/IVP_12test.cpp vnode_tubex/CtcVnodelp.cpp vnode_tubex/CtcVnodelp.h )
+
 
 
 add_executable(test examples/test.cpp vnode_tubex/CtcVnodelp.cpp vnode_tubex/CtcVnodelp.h)
@@ -98,7 +98,6 @@ target_link_libraries(19  ${VNODE_LIBS})
 target_link_libraries(20  ${VNODE_LIBS})
 target_link_libraries(21  ${VNODE_LIBS})
 
-target_link_libraries(12t  ${VNODE_LIBS})
 
 
 #bvp
@@ -109,8 +108,7 @@ add_executable(b15 examples/BVP_15.cpp vnode_tubex/CtcVnodelp.cpp vnode_tubex/Ct
 add_executable(b16 examples/BVP_16.cpp vnode_tubex/CtcVnodelp.cpp vnode_tubex/CtcVnodelp.h)
 add_executable(b17 examples/BVP_17.cpp vnode_tubex/CtcVnodelp.cpp vnode_tubex/CtcVnodelp.h)
 add_executable(b18 examples/BVP_18.cpp vnode_tubex/CtcVnodelp.cpp vnode_tubex/CtcVnodelp.h)
-add_executable(b18test examples/BVP_18_test.cpp vnode_tubex/CtcVnodelp.cpp vnode_tubex/CtcVnodelp.h)
-#add_executable(b18test1 examples/BVP_18_test1.cpp vnode_tubex/CtcVnodelp.cpp vnode_tubex/CtcVnodelp.h)
+
 add_executable(bID examples/BVP_ID.cpp vnode_tubex/CtcVnodelp.cpp vnode_tubex/CtcVnodelp.h)
 add_executable(b23 examples/BVP_23.cpp vnode_tubex/CtcVnodelp.cpp vnode_tubex/CtcVnodelp.h)
 
@@ -122,8 +120,8 @@ target_link_libraries(b15  ${VNODE_LIBS})
 target_link_libraries(b16  ${VNODE_LIBS})
 target_link_libraries(b17  ${VNODE_LIBS})
 target_link_libraries(b18  ${VNODE_LIBS})
-target_link_libraries(b18test  ${VNODE_LIBS})
-#target_link_libraries(b18test1  ${VNODE_LIBS})
+
+
 target_link_libraries(bID  ${VNODE_LIBS})
 target_link_libraries(b23  ${VNODE_LIBS})
 
