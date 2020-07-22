@@ -64,22 +64,22 @@ int main()
     tubex::Solver solver(epsilon);
 
     solver.set_refining_fxpt_ratio(2.);
-    solver.set_propa_fxpt_ratio(0.);
-    solver.set_var3b_fxpt_ratio(0.999);
-    //solver.set_var3b_fxpt_ratio(-1);
+    solver.set_propa_fxpt_ratio(0.99);
+    //    solver.set_var3b_fxpt_ratio(0.999);
+    solver.set_var3b_fxpt_ratio(-1);
 
     solver.set_var3b_propa_fxpt_ratio(0.999);
     solver.set_var3b_timept(0);
     solver.set_trace(1);
-    solver.set_max_slices(20000);
+    solver.set_max_slices(40000);
     //solver.set_max_slices(1);
     solver.set_refining_mode(0);
     solver.set_bisection_timept(3);
-    solver.set_contraction_mode(2);
+    solver.set_contraction_mode(4);
     solver.set_stopping_mode(0);
     solver.set_var3b_external_contraction(false);
-    //    list<TubeVector> l_solutions = solver.solve(x, &contract);
-    list<TubeVector> l_solutions = solver.solve(x, f, &contract);
+    list<TubeVector> l_solutions = solver.solve(x, &contract);
+    //    list<TubeVector> l_solutions = solver.solve(x, f, &contract);
     //   cout << "nb sol " << l_solutions.size() << endl;
 
     double t_max_diam;

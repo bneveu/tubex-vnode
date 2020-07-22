@@ -54,7 +54,7 @@ int main()
 
     x.set(v, 0.); // ini
 
-    double eps=0.18;
+    double eps=0.2;
     // double eps=0.17;
 
    /* =========== SOLVER =========== */
@@ -65,16 +65,16 @@ int main()
 
     solver.set_refining_fxpt_ratio(2.);
     solver.set_propa_fxpt_ratio(0.99);
-    solver.set_var3b_fxpt_ratio(-1);
-    solver.set_var3b_propa_fxpt_ratio(0.9);
+    solver.set_var3b_fxpt_ratio(0.999);
+    solver.set_var3b_propa_fxpt_ratio(0.999);
     solver.set_var3b_timept(0);
     solver.set_trace(1);
-    //solver.set_max_slices(4000);
-    solver.set_max_slices(1);
-   // solver.set_refining_mode(0);
+    solver.set_max_slices(10000);
+    //solver.set_max_slices(1);
+    solver.set_refining_mode(0);
     solver.set_bisection_timept(-1);
-    solver.set_contraction_mode(2);
-    solver.set_stopping_mode(1);
+    solver.set_contraction_mode(4);
+    solver.set_stopping_mode(0);
     //    list<TubeVector> l_solutions = solver.solve(x, f, &contract);
     list<TubeVector> l_solutions = solver.solve(x, &contract);
     cout << l_solutions.front()(domain.ub()) << endl;
