@@ -4,8 +4,8 @@ namespace tubex {
     CtcVnodelp::CtcVnodelp() : DynCtc() {
     }//ctcvnode
 
-	    void CtcVnodelp::fill_state_vector( Tube &x,vector<double> &time_gate ,vector<ibex::IntervalVector>& si, const int& i){
-		tubex::Slice *x_slice=x.first_slice();
+  void CtcVnodelp::fill_state_vector( Tube &x,vector<double> &time_gate ,vector<ibex::IntervalVector>& si, const int& i){
+    tubex::Slice *x_slice=x.first_slice();
         int k=0;
         while (x_slice!=NULL){
             Interval outgate=x_slice->output_gate();
@@ -201,6 +201,7 @@ namespace tubex {
                 tnext=gates_vector[starter_index + k].first;
 
             }
+	    delete vnode_fwd_solver;
         }
         ////////////////////////////////bwd integration///////////////////////////////////////
         //bwd tubevector
@@ -226,7 +227,7 @@ namespace tubex {
             vnodelp::VNODE *vnode_bwd_solver = new vnodelp::VNODE(ad);
             vnode_bwd_solver->setOneStep(vnodelp::on);
             vnode_bwd_solver->setOrder(ord);
-		vnode_bwd_solver->setHmin(0.0005);
+	    vnode_bwd_solver->setHmin(0.0005);
             //main integration loop
             while(ti!=interval(t)){
                 //"slice" integration loop
@@ -279,7 +280,7 @@ namespace tubex {
                     tprev=gates_vector[starter_index + k].first;
 
             }
-
+	    delete vnode_bwd_solver;
         }
   // cout << tempo_x << endl;
 //cout << "x" << endl;
@@ -312,7 +313,7 @@ namespace tubex {
 //
 //            ty_slice=ty_slice->next_slice();
 //        }
-    x=tempo_x&x;
+	x=tempo_x&x;
 //cout << "############################# x&vnodex "<< endl;
 //
 //        tubex::Slice *xv_slice=x[0].first_slice();
@@ -332,4 +333,4 @@ namespace tubex {
     }
 }
 
-//x: 0.25,0.28
+
