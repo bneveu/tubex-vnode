@@ -52,12 +52,12 @@ int main()
     IntervalVector x1(2);
     x0[0]=Interval(0.,0.);
     x0[1]=Interval(-1.e8,1.e8);
-    cout << " avant set " << endl;
+
     x.set(x0,0.);
     x1[0]=Interval(2.,2.);
     x1[1]=Interval(-1.e8,1.e8);
     x.set(x1,pi/2);
-    cout << " x " << x << endl;
+
 
     /* =========== SOLVER =========== */
 
@@ -85,11 +85,6 @@ int main()
     double t_max_diam;
     cout << l_solutions.front()<<" ti-> " <<l_solutions.front()(domain.lb()) << " tf -> "<< l_solutions.front()(domain.ub()) <<" max diam : " <<l_solutions.front()[0].max_gate_diam(t_max_diam)<<" , " <<l_solutions.front()[1].max_gate_diam(t_max_diam) << " volume :  "<< l_solutions.front().volume()<<" ti (diam) -> " <<l_solutions.front()(domain.lb()).diam() << " tf (diam) -> "<< l_solutions.front()(domain.ub()).diam() << endl;
 
-
-    t2 = clock();
-    temps = (float)(t2-t1)/CLOCKS_PER_SEC;
-    cout << "temps ="<< temps << endl<<endl;
-    return 0;
-    
+        
     return 0;
 }

@@ -60,7 +60,7 @@ void contract(TubeVector& x, double t0, bool incremental)
 
 
 int main()
-{   float temps;
+{ 
     clock_t t1, t2;
     t1=clock();//sert à calculer le temps d'exécution
     
@@ -114,9 +114,7 @@ int main()
     cout << l_solutions.front()<<" ti-> " <<l_solutions.front()(domain.lb()) << " tf -> "<< l_solutions.front()(domain.ub()) <<" max diam : (" <<l_solutions.front()[0].max_gate_diam(t_max_diam)<< ")" << " volume :  "<< l_solutions.front().volume()<<" ti (diam) -> " <<l_solutions.front()(domain.lb()).diam() << " tf (diam) -> "<< l_solutions.front()(domain.ub()).diam() << endl;
     cout << l_solutions.back()<<" ti-> " <<l_solutions.back()(domain.lb()) << " tf -> "<< l_solutions.back()(domain.ub()) <<" max diam : (" <<l_solutions.back()[0].max_gate_diam(t_max_diam)<<")"<< " volume :  "<< l_solutions.back().volume()<<" ti (diam) -> " <<l_solutions.back()(domain.lb()).diam() << " tf (diam) -> "<< l_solutions.back()(domain.ub()).diam() << endl;
 
-    t2 = clock();
-    temps = (float)(t2-t1)/CLOCKS_PER_SEC;
-    cout << "temps ="<< temps << endl<<endl;
+   
     return 0;
     
 }

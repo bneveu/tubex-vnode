@@ -90,23 +90,6 @@ int main() {
     cout << l_solutions.back()<<" ti-> " <<l_solutions.back()(domain.lb()) << " tf -> "<< l_solutions.back()(domain.ub()) <<" max diam : (" <<l_solutions.back()[0].max_gate_diam(t_max_diam)<<", "<<l_solutions.back()[1].max_gate_diam(t_max_diam)<< ")"<< " volume :  "<< l_solutions.back().volume()<<" ti (diam) -> " <<l_solutions.back()(domain.lb()).diam() << " tf (diam) -> "<< l_solutions.back()(domain.ub()).diam() << endl;
     }
 
-    t2 = clock();
-    temps = (float)(t2-t1)/CLOCKS_PER_SEC;
-    cout << "temps ="<< temps << endl<<endl;
+    
     return 0;
 }
-/*
-
-solver.set_cid_timept(0);
-solver.set_bisection_timept(-1);
-solver.set_trace(1);
-solver.set_max_slices(1);
-solver.set_refining_mode(2);
-
-  */
-//
-//TubeVector (dim 2) [0, 1]↦([-0.53469, 0.295158] ; [-1.20621, 0.77602]), 153 slices ti-> ([0, 0] ; [-0.0809922, 0.77602]) tf -> ([0, 0] ; [-1.08613, -0.319046]) max diam : (0.829847 ; 0.959983) volume :  1.44828 ti (diam) -> (0 ; 0.857012) tf (diam) -> (0 ; 0.767083)
-//TubeVector (dim 2) [0, 1]↦([-0.415218, 4.12288] ; [-11.0195, 10.9699]), 173 slices ti-> ([0, 0] ; [10.82, 10.9699]) tf -> ([0, 0] ; [-10.982, -10.8134]) max diam : (0.569361 ; 1.10763) volume :  0.720347 ti (diam) -> (0 ; 0.149883) tf (diam) -> (0 ; 0.168621)
-
-//TubeVector (dim 2) [0, 1]↦([-1.20465e-13, 0.179116] ; [-0.723309, 0.604904]), 42 slices ti-> ([0, 0] ; [0.44696, 0.604904]) tf -> ([0, 0] ; [-0.602787, -0.519447]) max diam : (0.0956414 ; 0.255698) volume :  0.317889 ti (diam) -> (0 ; 0.157943) tf (diam) -> (0 ; 0.0833401)
-//TubeVector (dim 2) [0, 1]↦([-0.214989, 4.09685] ; [-10.8724, 10.8489]), 121 slices ti-> ([0, 0] ; [10.8466, 10.8489]) tf -> ([0, 0] ; [-10.849, -10.8466]) max diam : (0.423897 ; 0.999834) volume :  0.537764 ti (diam) -> (0 ; 0.00224738) tf (diam) -> (0 ; 0.00237805)

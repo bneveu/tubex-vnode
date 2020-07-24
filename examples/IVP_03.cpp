@@ -42,7 +42,7 @@ int main()
 {    float temps;
     clock_t t1, t2;
     t1=clock();//sert à calculer le temps d'exécution
-    
+    TFunction f("x", "-sin(x)");
     Interval domain(0.,10.);
     TubeVector x(domain, 1);
     IntervalVector v(1);
@@ -52,7 +52,7 @@ int main()
     x.set(v, 10.); // ini
 
 
-    double eps=0.1;
+    double eps=0.005;
 
     /* =========== SOLVER =========== */
     Vector epsilon(1, eps);
@@ -61,17 +61,18 @@ int main()
     tubex::Solver solver(epsilon);
 
    // solver.set_refining_fxpt_ratio(0.);
-    solver.set_propa_fxpt_ratio(0.1);
-    //solver.set_var3b_fxpt_ratio(0.5);
+    solver.set_propa_fxpt_ratio(0.);
+    solver.set_var3b_fxpt_ratio(-1);
 
     //solver.set_var3b_timept(0);
     solver.set_trace(1);
-    solver.set_max_slices(1);
+    solver.set_max_slices(1000);
    // solver.set_refining_mode(0);
     solver.set_bisection_timept(0);
-    // solver.set_contraction_mode(2);
+    solver.set_contraction_mode(4);
 
-    list<TubeVector> l_solutions = solver.solve(x, &contract);
+    //list<TubeVector> l_solutions = solver.solve(x, &contract);
+    list<TubeVector> l_solutions = solver.solve(x, f, &contract);
     cout << l_solutions.front()<< endl;
     cout << "nb sol " << l_solutions.size() << endl;
 
@@ -80,9 +81,6 @@ int main()
 
 
     t2 = clock();
-    temps = (float)(t2-t1)/CLOCKS_PER_SEC;
-    cout << "temps ="<< temps << endl<<endl;
-    return 0;
-
+  
     return 0;
 }

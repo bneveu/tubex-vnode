@@ -42,21 +42,21 @@ void contract(TubeVector& x, double t0, bool incremental)
 
 int main()
 
-{    float temps;
+{    
     clock_t t1, t2;
     t1=clock();//sert à calculer le temps d'exécution
-     TFunction f("x1", "x2" ,"(x2;-10*(x2+x1^2))");
+    TFunction f("x1", "x2" ,"(x2;-10*(x2+x1^2))");
      //tubex::Function f("x1", "x2" ,"(x2;-100*(x2+x1^2))");
     Interval domain(0.,1.);
     TubeVector x(domain,2);
     IntervalVector v(2);
     v[0]=Interval(0.,0.);
-     //    v[1]=Interval(-1e300,1e300);
+    //    v[1]=Interval(-1e300,1e300);
     v[1]=Interval(-20,20);
     x.set(v, 0.); // ini
     v[0]=Interval(0.5,0.5);
     v[1]=Interval(-20,20);
-   // v[1]=Interval(-10.,10.);
+    // v[1]=Interval(-10.,10.);
     x.set(v,1.);
 
     double eps0=0.05;
@@ -96,10 +96,7 @@ int main()
     cout << l_solutions.front()<<" ti-> " <<l_solutions.front()(domain.lb()) << " tf -> "<< l_solutions.front()(domain.ub()) <<" max diam : " <<l_solutions.front()[0].max_gate_diam(t_max_diam)<<", "<<l_solutions.front()[1].max_gate_diam(t_max_diam) << " volume :  "<< l_solutions.front().volume()<<" ti (diam) -> " <<l_solutions.front()(domain.lb()).diam() << " tf (diam) -> "<< l_solutions.front()(domain.ub()).diam() << endl;
 
 
-    t2 = clock();
-    temps = (float)(t2-t1)/CLOCKS_PER_SEC;
-    cout << "temps ="<< temps << endl<<endl;
-    return 0;
+    
     
     return 0;
 }

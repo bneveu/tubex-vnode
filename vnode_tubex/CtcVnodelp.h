@@ -7,7 +7,7 @@
 #include "tubex_Slice.h"
 #include "vnode.h"
 #include <vector>
-#include "vnode.h"
+
 
 
 using namespace ibex;

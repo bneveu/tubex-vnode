@@ -43,7 +43,7 @@ int main()
 {   
 
   TFunction f("x", "-x");
- float temps;
+  float temps;
     clock_t t1, t2;
     t1=clock();//sert à calculer le temps d'exécution
     
@@ -65,7 +65,7 @@ int main()
     tubex::Solver solver(epsilon);
 
     solver.set_refining_fxpt_ratio(2.0);
-    solver.set_propa_fxpt_ratio(0.);
+    solver.set_propa_fxpt_ratio(0.  );
     solver.set_var3b_fxpt_ratio(-1);
 
    // solver.set_var3b_timept(1);
@@ -75,7 +75,7 @@ int main()
     //    solver.set_stopping_mode(1);
     solver.set_refining_mode(0.);
     solver.set_bisection_timept(0);
-    solver.set_contraction_mode(0);
+    solver.set_contraction_mode(4);
 
     solver.set_max_slices(40000);
     //    list<TubeVector> l_solutions = solver.solve(x,f);
@@ -88,16 +88,11 @@ int main()
     
     list<TubeVector> l_solutions = solver.solve(x, f, &contract);
     //list<TubeVector> l_solutions = solver.solve(x, &contract);
-    cout << l_solutions.front() << endl;
+
     cout << "nb sol " << l_solutions.size() << endl;
     double t_max_diam;
     cout << l_solutions.front()<<" ti-> " <<l_solutions.front()(domain.lb()) << " tf -> "<< l_solutions.front()(domain.ub()) <<" max gate diam : " <<l_solutions.front().max_gate_diam(t_max_diam) << " volume :  "<< l_solutions.front().volume()<<" ti (diam) -> " <<l_solutions.front()(domain.lb()).diam() << " tf (diam) -> "<< l_solutions.front()(domain.ub()).diam() << endl;
 
-
-    t2 = clock();
-    temps = (float)(t2-t1)/CLOCKS_PER_SEC;
-    cout << "temps ="<< temps << endl<<endl;
-    return 0;
-
+   
     return 0;
 }
