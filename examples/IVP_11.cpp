@@ -51,7 +51,7 @@ int main()
     x.set(v, 0.); // ini
 
 
-    double eps=0.002;
+    double eps=0.0002;
 
     /* =========== SOLVER =========== */
     Vector epsilon(2, eps);
@@ -62,17 +62,21 @@ int main()
     //  solver.set_refining_fxpt_ratio(0.);
     solver.set_refining_fxpt_ratio(2);
 
-    solver.set_propa_fxpt_ratio(0.);
-    solver.set_var3b_fxpt_ratio(-1);
-
+    solver.set_propa_fxpt_ratio(0.99);
+    //solver.set_var3b_fxpt_ratio(-1);
+    solver.set_var3b_fxpt_ratio(0.9);
+    solver.set_var3b_propa_fxpt_ratio(0.9);
     //  solver.set_var3b_timept(0);
     solver.set_trace(1);
-    solver.set_max_slices(10000);
+    solver.set_max_slices(100);
+    //    solver.set_max_slices(1);
     
     solver.set_bisection_timept(0);
     solver.set_contraction_mode(2);
+    solver.set_stopping_mode(1);
     
-    list<TubeVector> l_solutions = solver.solve(x,f,  &contract);
+    //    list<TubeVector> l_solutions = solver.solve(x,f,  &contract);
+    list<TubeVector> l_solutions = solver.solve(x,&contract);
     cout << l_solutions.front() << endl;
     cout << "nb sol " << l_solutions.size() << endl;
     double t_max_diam;

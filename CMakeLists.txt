@@ -111,6 +111,8 @@ add_executable(b18 examples/BVP_18.cpp vnode_tubex/CtcVnodelp.cpp vnode_tubex/Ct
 
 add_executable(bID examples/BVP_ID.cpp vnode_tubex/CtcVnodelp.cpp vnode_tubex/CtcVnodelp.h)
 add_executable(b23 examples/BVP_23.cpp vnode_tubex/CtcVnodelp.cpp vnode_tubex/CtcVnodelp.h)
+add_executable(b24 examples/BVP_24.cpp vnode_tubex/CtcVnodelp.cpp vnode_tubex/CtcVnodelp.h)
+add_executable(b25 examples/BVP_25.cpp vnode_tubex/CtcVnodelp.cpp vnode_tubex/CtcVnodelp.h)
 
 
 
@@ -124,6 +126,8 @@ target_link_libraries(b18  ${VNODE_LIBS})
 
 target_link_libraries(bID  ${VNODE_LIBS})
 target_link_libraries(b23  ${VNODE_LIBS})
+target_link_libraries(b24  ${VNODE_LIBS})
+target_link_libraries(b25  ${VNODE_LIBS})
 
 #bubibex
 
