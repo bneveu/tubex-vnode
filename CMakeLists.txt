@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 2.8)
 project(tubex-vnode)
 
 
+
 ################################################################################
 # Looking for Ibex, Tubex
 ################################################################################
@@ -63,71 +64,82 @@ set(VNODE_LIBS vnode lapack blas gfortran prim tubex-solve tubex tubex-rob ibex 
 include_directories(vnode_tubex)
 
 
+add_library(CtcVnodelp STATIC vnode_tubex/CtcVnodelp.cpp vnode_tubex/CtcVnodelp.h)
+target_link_libraries(CtcVnodelp  ${VNODE_LIBS})
+ 
 
 #Set C++ version
 set(CMAKE_CXX_STANDARD 11)
 #ivp
-add_executable(01 examples/IVP_01.cpp vnode_tubex/CtcVnodelp.cpp vnode_tubex/CtcVnodelp.h)
-add_executable(02 examples/IVP_02.cpp vnode_tubex/CtcVnodelp.cpp vnode_tubex/CtcVnodelp.h)
-add_executable(03 examples/IVP_03.cpp vnode_tubex/CtcVnodelp.cpp vnode_tubex/CtcVnodelp.h)
-add_executable(10 examples/IVP_10.cpp vnode_tubex/CtcVnodelp.cpp vnode_tubex/CtcVnodelp.h)
-add_executable(11 examples/IVP_11.cpp vnode_tubex/CtcVnodelp.cpp vnode_tubex/CtcVnodelp.h)
-add_executable(12 examples/IVP_12.cpp vnode_tubex/CtcVnodelp.cpp vnode_tubex/CtcVnodelp.h)
-add_executable(13 examples/IVP_13.cpp vnode_tubex/CtcVnodelp.cpp vnode_tubex/CtcVnodelp.h)
-add_executable(14 examples/IVP_14.cpp vnode_tubex/CtcVnodelp.cpp vnode_tubex/CtcVnodelp.h)
-add_executable(19 examples/IVP_19.cpp vnode_tubex/CtcVnodelp.cpp vnode_tubex/CtcVnodelp.h)
-add_executable(20 examples/IVP_20.cpp vnode_tubex/CtcVnodelp.cpp vnode_tubex/CtcVnodelp.h)
-add_executable(21 examples/IVP_21.cpp vnode_tubex/CtcVnodelp.cpp vnode_tubex/CtcVnodelp.h)
+add_executable(01 examples/IVP_01.cpp)
+add_executable(02 examples/IVP_02.cpp)
+add_executable(03 examples/IVP_03.cpp)
+add_executable(10 examples/IVP_10.cpp)
+add_executable(11 examples/IVP_11.cpp)
+add_executable(12 examples/IVP_12.cpp)
+add_executable(13 examples/IVP_13.cpp)
+add_executable(14 examples/IVP_14.cpp)
+add_executable(19 examples/IVP_19.cpp)
+add_executable(20 examples/IVP_20.cpp)
+add_executable(21 examples/IVP_21.cpp)
 
 
 
-add_executable(test examples/test.cpp vnode_tubex/CtcVnodelp.cpp vnode_tubex/CtcVnodelp.h)
-target_link_libraries(test  ${VNODE_LIBS})
+add_executable(test examples/test.cpp)
+target_link_libraries(test  ${VNODE_LIBS} CtcVnodelp)
 
 
 
-target_link_libraries(01  ${VNODE_LIBS})
-target_link_libraries(02  ${VNODE_LIBS})
-target_link_libraries(03  ${VNODE_LIBS})
-target_link_libraries(10  ${VNODE_LIBS})
-target_link_libraries(11  ${VNODE_LIBS})
-target_link_libraries(12  ${VNODE_LIBS})
-target_link_libraries(13  ${VNODE_LIBS})
-target_link_libraries(14  ${VNODE_LIBS})
-target_link_libraries(19  ${VNODE_LIBS})
-target_link_libraries(20  ${VNODE_LIBS})
-target_link_libraries(21  ${VNODE_LIBS})
+target_link_libraries(01  ${VNODE_LIBS} CtcVnodelp)
+target_link_libraries(02  ${VNODE_LIBS} CtcVnodelp)
+target_link_libraries(03  ${VNODE_LIBS} CtcVnodelp)
+target_link_libraries(10  ${VNODE_LIBS} CtcVnodelp)
+target_link_libraries(11  ${VNODE_LIBS} CtcVnodelp)
+target_link_libraries(12  ${VNODE_LIBS} CtcVnodelp)
+target_link_libraries(13  ${VNODE_LIBS} CtcVnodelp)
+target_link_libraries(14  ${VNODE_LIBS} CtcVnodelp)
+target_link_libraries(19  ${VNODE_LIBS} CtcVnodelp)
+target_link_libraries(20  ${VNODE_LIBS} CtcVnodelp)
+target_link_libraries(21  ${VNODE_LIBS} CtcVnodelp)
 
 
 
 #bvp
 
-add_executable(b04 examples/BVP_04.cpp vnode_tubex/CtcVnodelp.cpp vnode_tubex/CtcVnodelp.h)
-add_executable(b09 examples/BVP_09.cpp vnode_tubex/CtcVnodelp.cpp vnode_tubex/CtcVnodelp.h)
-add_executable(b15 examples/BVP_15.cpp vnode_tubex/CtcVnodelp.cpp vnode_tubex/CtcVnodelp.h)
-add_executable(b16 examples/BVP_16.cpp vnode_tubex/CtcVnodelp.cpp vnode_tubex/CtcVnodelp.h)
-add_executable(b17 examples/BVP_17.cpp vnode_tubex/CtcVnodelp.cpp vnode_tubex/CtcVnodelp.h)
-add_executable(b18 examples/BVP_18.cpp vnode_tubex/CtcVnodelp.cpp vnode_tubex/CtcVnodelp.h)
+add_executable(b04 examples/BVP_04.cpp )
+add_executable(b09 examples/BVP_09.cpp )
+add_executable(b15 examples/BVP_15.cpp )
+add_executable(b16 examples/BVP_16.cpp )
+add_executable(b17 examples/BVP_17.cpp )
+add_executable(b18 examples/BVP_18.cpp )
 
-add_executable(bID examples/BVP_ID.cpp vnode_tubex/CtcVnodelp.cpp vnode_tubex/CtcVnodelp.h)
-add_executable(b23 examples/BVP_23.cpp vnode_tubex/CtcVnodelp.cpp vnode_tubex/CtcVnodelp.h)
-add_executable(b24 examples/BVP_24.cpp vnode_tubex/CtcVnodelp.cpp vnode_tubex/CtcVnodelp.h)
-add_executable(b25 examples/BVP_25.cpp vnode_tubex/CtcVnodelp.cpp vnode_tubex/CtcVnodelp.h)
-
-
-
-target_link_libraries(b04  ${VNODE_LIBS})
-target_link_libraries(b09  ${VNODE_LIBS})
-target_link_libraries(b15  ${VNODE_LIBS})
-target_link_libraries(b16  ${VNODE_LIBS})
-target_link_libraries(b17  ${VNODE_LIBS})
-target_link_libraries(b18  ${VNODE_LIBS})
+add_executable(bID examples/BVP_ID.cpp )
+add_executable(b23 examples/BVP_23.cpp )
+add_executable(b24 examples/BVP_24.cpp )
+add_executable(b25 examples/BVP_25.cpp )
 
 
-target_link_libraries(bID  ${VNODE_LIBS})
-target_link_libraries(b23  ${VNODE_LIBS})
-target_link_libraries(b24  ${VNODE_LIBS})
-target_link_libraries(b25  ${VNODE_LIBS})
+
+target_link_libraries(b04  ${VNODE_LIBS} CtcVnodelp)
+target_link_libraries(b09  ${VNODE_LIBS} CtcVnodelp)
+target_link_libraries(b15  ${VNODE_LIBS} CtcVnodelp)
+target_link_libraries(b16  ${VNODE_LIBS} CtcVnodelp)
+target_link_libraries(b17  ${VNODE_LIBS} CtcVnodelp)
+target_link_libraries(b18  ${VNODE_LIBS} CtcVnodelp)
+
+
+target_link_libraries(bID  ${VNODE_LIBS} CtcVnodelp)
+target_link_libraries(b23  ${VNODE_LIBS} CtcVnodelp)
+target_link_libraries(b24  ${VNODE_LIBS} CtcVnodelp)
+target_link_libraries(b25  ${VNODE_LIBS} CtcVnodelp)
+
+#PA Add
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -msse3")
+add_compile_options(-std=c++11)
+add_definitions(-std=c++11) # CMake 2.8.11 or older
+message("Coucou: ${CMAKE_CXX_FLAGS}")
+#PA Add end
 
 #bubibex
 

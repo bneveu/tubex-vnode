@@ -88,7 +88,6 @@ int main()
     
     list<TubeVector> l_solutions = solver.solve(x, f, &contract);
     //list<TubeVector> l_solutions = solver.solve(x, &contract);
-
     cout << "nb sol " << l_solutions.size() << endl;
     double t_max_diam;
     cout << l_solutions.front()<<" ti-> " <<l_solutions.front()(domain.lb()) << " tf -> "<< l_solutions.front()(domain.ub()) <<" max gate diam : " <<l_solutions.front().max_gate_diam(t_max_diam) << " volume :  "<< l_solutions.front().volume()<<" ti (diam) -> " <<l_solutions.front()(domain.lb()).diam() << " tf (diam) -> "<< l_solutions.front()(domain.ub()).diam() << endl;

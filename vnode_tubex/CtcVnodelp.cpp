@@ -1,336 +1,360 @@
 #include "CtcVnodelp.h"
 //#include <vector>
 namespace tubex {
+
     CtcVnodelp::CtcVnodelp() : DynCtc() {
+        //default Vnode order is 20, we set it here to 11
+        Vord = 11;
+        ishminset = false;
+        Vatol = 1e-12;
+        Vrtol = 1e-12;
+        IgnoreSlicing = false;
     }//ctcvnode
 
-  void CtcVnodelp::fill_state_vector( Tube &x,vector<double> &time_gate ,vector<ibex::IntervalVector>& si, const int& i){
-    tubex::Slice *x_slice=x.first_slice();
-        int k=0;
-        while (x_slice!=NULL){
-            Interval outgate=x_slice->output_gate();
-            Interval dom=x_slice->tdomain();
-            if(k==0) {
-                Interval ingate = x_slice->input_gate();
-                si[k][i] =ingate;
-                //cout <<"[ "<<si[k][i].lb()<<" , "<< si[k][i].ub()<<" ]"<< endl;
+    void CtcVnodelp::set_vnode_order(unsigned int vorder) {
+        Vord = vorder;
+    }
 
-                time_gate[k]=dom.lb();
+    void CtcVnodelp::set_vnode_hmin(double vhmin) {
+        Vhmin = vhmin;
+        ishminset = true;
+    }
+
+    void CtcVnodelp::set_vnode_tol(double vatol, double vrtol) {
+        Vatol = vatol;
+        Vrtol = vrtol;
+    }
+
+    void CtcVnodelp::set_ignoreslicing(bool ignorslicing) {
+        IgnoreSlicing = ignorslicing;
+    }
+
+
+    void    CtcVnodelp::fill_state_vector(Tube &x, vector<double> &time_gate, vector<ibex::IntervalVector> &si, const int &i) {
+        tubex::Slice *x_slice = x.first_slice();
+        int k = 0;
+        while (x_slice != NULL) {
+            Interval outgate = x_slice->output_gate();
+            Interval dom = x_slice->tdomain();
+            if (k == 0) {
+                Interval ingate = x_slice->input_gate();
+                si[k][i] = ingate;
+
+                time_gate[k] = dom.lb();
                 k++;
             }
-            si[k][i] =outgate;
-            //  cout <<"[ "<<si[k][i].lb()<<" , "<< si[k][i].ub()<<" ]"<< endl;
-            time_gate[k]=dom.ub();
+            si[k][i] = outgate;
+            time_gate[k] = dom.ub();
             k++;
-            x_slice=x_slice->next_slice();
+            x_slice = x_slice->next_slice();
         }
     }
 
-    void CtcVnodelp::Contract(vnodelp::AD *ad, double t, double tend, int n, Tube &x, double t0,bool incremental) {
+    bool CtcVnodelp::vnode_integration(vnodelp::AD *ad, const int n, TubeVector &x, TubeVector &transition_x,
+				       const double &t, const double &tend, const int &starter_index,
+                                       const Vstate &gates_vector, const bool &direction) {
+        //ODE Vnodelp
+        vnodelp::VNODE *vnode_solver = new vnodelp::VNODE(ad);
+        vnode_solver->setOneStep(vnodelp::on);
+        vnode_solver->setOrder(Vord);
+        if (ishminset)
+            vnode_solver->setHmin(Vhmin);
+
+
+        //main integration loop
+        interval final_time;
+        int k = 1;
+        iVector y(n);
+        interval ti;
+        interval tnext;
+        if (direction == true) {
+            final_time = interval(tend);
+            //Time and initial condition
+            ti = interval(gates_vector[starter_index].first);
+            if (IgnoreSlicing) {
+                tnext = interval(tend);
+            } else {
+                tnext = interval(gates_vector[starter_index + k].first);
+            }
+            //initial condition
+            for (int i = 0; i < n; i++) {
+                y[i] = interval(gates_vector[starter_index].second[i].lb(),
+                                gates_vector[starter_index].second[i].ub());
+            }
+        } else if (direction == false) {
+            final_time = interval(t);
+            //Time and initial condition
+            ti = interval(gates_vector[starter_index].first);
+            if (IgnoreSlicing) {
+                tnext = interval(t);
+            } else {
+                tnext = interval(gates_vector[starter_index - k].first);
+            }
+            //initial condition
+
+            for (int i = 0; i < n; i++) {
+                y[i] = interval(gates_vector[starter_index].second[i].lb(),
+                                gates_vector[starter_index].second[i].ub());
+            }
+        }
+        while (ti != final_time) {
+            //"slice" integration loop
+            while (ti != tnext) {
+
+                vnode_solver->integrate(ti, y, tnext);
+
+                if (!vnode_solver->successful()) {
+		  //                    cout << "VNODE-LP could not reach t = " << tnext << endl;
+                    transition_x.set_empty();
+		    delete vnode_solver;
+                    return false;
+                }
+//                for (int ith_sol = 0; ith_sol < n; ith_sol++)
+//                    cout << "solution enclosure at t = " << ti << " [" << inf(y[ith_sol]) << ", " << sup(y[ith_sol])
+//                         << "]" << endl;
+
+                //global enclosure and time step
+                iVector Y = vnode_solver->getAprioriEncl();
+                interval Tj = vnode_solver->getT();
+
+                //putting results in fwd_x/bwd_x
+
+                //parameters to save data
+                IntervalVector door(n);
+                IntervalVector boxe(n);
+
+                //results conversion vnode interval -> ibex interval
+                for (int i = 0; i < n; i++) {
+                    door[i] = Interval(inf(y[i]), sup(y[i]));
+                    boxe[i] = Interval(inf(Y[i]), sup(Y[i]));
+                }
+
+                if (direction == true) {
+
+                    if (!door.intersects(x(sup(ti)))) {
+                        x.set_empty();
+			delete vnode_solver;
+                        return false;
+                    }
+
+                    //saving data in tubes
+                    if (sup(Tj) < sup(tnext))
+                        transition_x.set(boxe, Interval(inf(Tj), sup(Tj)));
+                    else
+                        transition_x.set(boxe, Interval(inf(Tj), sup(tnext)));
+
+                    transition_x.set(door, sup(ti));
+                } else if (direction == false) {
+
+                    if (!door.intersects(x(inf(ti)))) {
+                        x.set_empty();
+			delete vnode_solver;
+                        return false;
+                    }
+
+                    //saving data in tubes
+                    if (inf(Tj) > inf(tnext))
+                        transition_x.set(boxe, Interval(inf(Tj), sup(Tj)));
+                    else
+                        transition_x.set(boxe, Interval(inf(tnext), sup(Tj)));
+
+                    transition_x.set(door, inf(ti));
+                }
+            }
+            k++;
+            if (direction == true) {
+                if (k < gates_vector.size()) {
+                    tnext = gates_vector[starter_index + k].first;
+
+                }
+            } else if (direction == false) {
+                if (starter_index - k >= 0) {
+                    tnext = gates_vector[starter_index - k].first;
+
+                }
+            }
+        }
+
+	delete vnode_solver;
+        return true;
+    }
+
+
+    void CtcVnodelp::Contract(vnodelp::AD *ad, double t, double tend, int n, Tube &x, double t0, bool incremental) {
 
         ibex::Interval domain = ibex::Interval(t, tend);
-        TubeVector y(domain,n);
+        TubeVector y(domain, n);
         y[0] = x;
-        Contract( ad, t, tend, n, y,t0, incremental);
-        x=y[0];
+        Contract(ad, t, tend, n, y, t0, incremental);
+        x = y[0];
     }//
 
-    void CtcVnodelp::Contract(vnodelp::AD *ad, double t, double tend, int n, TubeVector &x, double t0,bool incremental) {
-        //check if initial time is given
+    void
+    CtcVnodelp::Contract(vnodelp::AD *ad, double t, double tend, int n, TubeVector &x, double t0, bool incremental) {
 
-//        assert(!x.is_empty());
-//	cout << "vnodelp..."<<endl;
         Interval domain(t, tend);
-        TubeVector tempo_x(domain,n);
-
-
-//        TubeVector fwd_x(domain, n);
-//        TubeVector bwd_x(domain, n);
-
+	//        cout << "vnodelp..." << domain << endl;
 
         //initialisation of vstate (get time discretization of x and gates)
         Vstate gates_vector;
         vector<ibex::IntervalVector> si;
-        vector <double>time_gate;
+        vector<double> time_gate;
         IntervalVector empty(n);
 
-        for(int i=0; i<=x[0].nb_slices();i++) {
+        int starter_index(0);
+        bool starter_index_exists = false;
+
+        ////////////////////// incrémental = 1 //////////////////////////////
+        if (incremental) {
             time_gate.emplace_back(std::nan("1"));
             si.emplace_back(empty);
-        }
+            if (IgnoreSlicing) {
+	      starter_index=0;
+                for (int i = 0; i < n; i++) {
+                    Slice *x_slice = x[i].slice(t0);
+                    if (x_slice->tdomain().lb() == t0) {
+                        Interval ingate = x_slice->input_gate();
+                        si[0][i] = ingate;
+			time_gate[0] = t0;
+			//	starter_index_exists = true;
+                    }
+		    else if (x_slice->tdomain().ub() == t0) {
+		      Interval outgate=x_slice->output_gate();
+		      si[0][i] = outgate;
+		      time_gate[0] = t0;
+			//			starter_index_exists = true;
+		    }
+		    else{ incremental=false;
+                        break;
+		    }
+		}
 
-        for(int i=0; i<n; i++){
-            fill_state_vector(x[i],time_gate,si,i);
-        }
-
-        int starter_index(0);
-        bool starter_index_exists=false;
-        //bisection time starter index for integration
-        if(incremental==true){
-            for (int i = 0; i < time_gate.size(); i++) {
-                gates_vector.emplace_back(time_gate[i], si[i]);
-                if(gates_vector[i].first==t0) {
-                    starter_index = i;
-                    starter_index_exists = true;
-                   // cout << "incrémental"<<endl;
+                gates_vector.emplace_back(time_gate[0], si[0]);
+            }
+            else if (!IgnoreSlicing) {
+                for (int i = 0; i < x[0].nb_slices() + 1; i++) {
+                    time_gate.emplace_back(std::nan("1"));
+                    si.emplace_back(empty);
                 }
+                for (int i = 0; i < n; i++){
+                    fill_state_vector(x[i], time_gate, si, i);
+                }
+                for (int i = 0; i < time_gate.size(); i++) {
+                    gates_vector.emplace_back(time_gate[i], si[i]);
+                    if (gates_vector[i].first == t0) {
+                        starter_index = i;
+                        starter_index_exists = true;
+                    }
+                }
+                if(!starter_index_exists)
+                    incremental = false;
+            }
+        }
+        ////////////////////// incrémental = 0 //////////////////////////////
+        else if(!incremental) {
+           
+            if (IgnoreSlicing) {
+                starter_index=0;
+               double tstart=t0;
+	       IntervalVector istart(n);
 
+	       tstart= x[0].first_slice()->tdomain().lb();
+	       for (int j=0; j<n; j++){
+		 istart[j]=x[j].first_slice()->input_gate();
+	       }
+	       double air=0; double minair=0;
+	       for (int j=0; j<n; j++){
+		 air+=x[j].first_slice()->input_gate().diam();
+	       }
+	       minair=air;
+	       Slice* s[n];
+	       for (int j=0; j<n; j++)
+		 s[j]=x[j].first_slice();
+	       for(const Slice *si = s[0] ; si != NULL ; si = si->next_slice()){
+		 air=0;
+		 for (int j=0; j<n; j++){
+		   air+=s[j]->output_gate().diam();
+		 }
+		 if (air < minair){ minair=air; tstart=si->tdomain().ub();
+		   for (int j=0; j<n; j++) {
+		     istart[j]=s[j]->output_gate();
+		   }
+		 }
+		 for (int j=0; j<n; j++) s[j]=s[j]->next_slice();
+	       }
+	    
+	       gates_vector.emplace_back(tstart,istart);
+	      
             }
 
-        }
-        if(starter_index_exists==false){
-            incremental=false;
-        }
-        //no bisection time -> smallest gate
-        if(incremental==false){
-          //  cout << "non incremental"<< endl;
+            else if(!IgnoreSlicing) {
 
-            for (int i = 0; i < time_gate.size(); i++) {
-                gates_vector.emplace_back(time_gate[i], si[i]);
-//                cout << "time : " << gates_vector[i].first << " - > [ " << gates_vector[i].second << " ] --> vol : " << gates_vector[i].second.volume()
-                  //   << endl;
-                if (i == 0)
-                    starter_index = i;
-                else {
-			double air(0);
-			double min_air(0);
-			for (int j=0; j<n; j++){
-			air+=gates_vector[i].second[j].diam();
-			min_air+=gates_vector[starter_index].second[j].diam();
-			}	
-                   // if (gates_vector[i].second.volume() < gates_vector[min_starter_index].second.volume())
-                     if(air<min_air) {
-                         starter_index = i;
-                     }
+	      for (int i = 0; i < x[0].nb_slices() + 1; i++) {
+                time_gate.emplace_back(std::nan("1"));
+                si.emplace_back(empty);
+            }
+            for (int i = 0; i < n; i++) {
+	      fill_state_vector(x[i], time_gate, si, i);
+            }
+                for (int i = 0; i < time_gate.size(); i++) {
+                    gates_vector.emplace_back(time_gate[i], si[i]);
+                    if (i == 0)
+                        starter_index = i;
+                    else {
+                        double air(0);
+                        double min_air(0);
+                        for (int j = 0; j < n; j++) {
+                            air += gates_vector[i].second[j].diam();
+                            min_air += gates_vector[starter_index].second[j].diam();
+                        }
+
+                        if (air < min_air) {
+                            starter_index = i;
+                        }
+                    }
                 }
             }
-
-//            cout << "min vol index : " << min_starter_index << "- > " << gates_vector[min_starter_index].first<<" : " <<gates_vector[min_starter_index].second << endl;
-
         }
+        //////////////////////////////////////////////
 
-        tempo_x.set(gates_vector[starter_index].second, gates_vector[starter_index].first);
-
-
-
-
+        TubeVector fwd_x(domain,n);
+        fwd_x.set(gates_vector[starter_index].second, gates_vector[starter_index].first);
+	//        TubeVector bwd_x(domain,n);
+	//        bwd_x.set(gates_vector[starter_index].second, gates_vector[starter_index].first);
+        bool successfull_integration=true;
 
         ////////////////////////////////fwd integration///////////////////////////////////////
 
         //fwd tubevector
-	//    cout << "# "<< min_starter_index << " ## "<<gates_vector.size()<< endl;
-        if (starter_index<gates_vector.size()-1) {
-            //fwd_x.set(gates_vector[min_starter_index].second, gates_vector[min_starter_index].first);
+        if (gates_vector[starter_index].first<tend) {
             // integration parameters
+            bool FWD=true;
+            bool direction=FWD;
+	   
+            successfull_integration=vnode_integration(ad,n,x, fwd_x,t,tend,starter_index,gates_vector,direction);
+            if(!successfull_integration)
+	       return;
 
-            //time
-            interval ti = interval(gates_vector[starter_index].first);
-            int k=1;
-            interval tnext = interval(gates_vector[starter_index + k].first);
-
-            //initial condition
-            iVector y(n);
-            for (int i = 0; i < n; i++) {
-                y[i] = interval(gates_vector[starter_index].second[i].lb(),
-                                gates_vector[starter_index].second[i].ub());
-            }
-
-            //integration object
-            vnodelp::VNODE *vnode_fwd_solver = new vnodelp::VNODE(ad);
-            vnode_fwd_solver->setOneStep(vnodelp::on);
-            vnode_fwd_solver->setOrder(ord);
-	    vnode_fwd_solver->setHmin(0.0005);
-            //main integration loop
-            while(ti!=interval(tend)){
-                //"slice" integration loop
-                while(ti!=tnext){
-                    vnode_fwd_solver->integrate(ti,y,tnext);
-                    if (!vnode_fwd_solver->successful()) {
-                        cout << "VNODE-LP could not reach t = " << tnext
-                             << endl;//need to figure out what exception we can add to this case
-                        //tempo_x.set_empty();
-                        return ;
-                    }
-                    //printVector(y);
-		    //                for (int ith_sol=0; ith_sol<n; ith_sol++)
-		  //                    cout <<"solution enclosure at t = " << ti << " ["<<inf(y[ith_sol]) << ", " <<sup(y[ith_sol])<<"]"<<endl;
-
-                    //global enclosure and time step
-                    iVector Y = vnode_fwd_solver->getAprioriEncl();
-                    interval Tj = vnode_fwd_solver->getT();
-
-                    //putting results in fwd_x
-
-                    //parameters to save data
-                    IntervalVector door(n);
-                    IntervalVector boxe(n);
-                    for(int k=0; k<n; k++) {
-                        door[k]=Interval(inf(y[k]), sup(y[k]));
-                        boxe[k]=Interval(inf(Y[k]), sup(Y[k]));
-
-                    }
-            //        cout <<sup(ti)<< "door : "<<door << " -> "<< door.intersects(x(sup(ti)))<<endl;
-//                    door.intersects(x(sup(ti)));
-//                    cout <<sup(ti)<< "door : "<<door <<endl;
-
-                    //test that the computed gate is still in the tube
-                  //  for(int e=0; e<n; e++) {
-                        if (!door.intersects(x(sup(ti)))) {
-                            x.set_empty();
-                          //  cout << "EMPTY"<<endl;
-                            return;
-                        }
-                //    }
-                    //
-                    if(sup(Tj)<sup(tnext))
-                        //fwd_x.set(boxe,Interval(inf(Tj),sup(Tj)));
-                        tempo_x.set(boxe,Interval(inf(Tj),sup(Tj)));
-                    else
-                        //fwd_x.set(boxe,Interval(inf(Tj),sup(tnext)));
-                        tempo_x.set(boxe,Interval(inf(Tj),sup(tnext)));
-                    //fwd_x.set(door,sup(ti));
-                    tempo_x.set(door,sup(ti));
-
-                }
-
-
-
-                k++;
-//                cout << "k "<< k << endl;
-                if(k<gates_vector.size())
-                tnext=gates_vector[starter_index + k].first;
-
-            }
-	    delete vnode_fwd_solver;
         }
         ////////////////////////////////bwd integration///////////////////////////////////////
         //bwd tubevector
-       // cout << "# "<< min_starter_index << " ## "<<gates_vector.size()<< endl;
-        if (starter_index>0) {
-           // cout << "bwd"<<endl;
-           // bwd_x.set(gates_vector[min_starter_index].second, gates_vector[min_starter_index].first);
-            // integration parameters
-
-            //time
-            interval ti = interval(gates_vector[starter_index].first);
-            int k=-1;
-            interval tprev = interval(gates_vector[starter_index + k].first);
-
-            //initial condition
-            iVector y(n);
-            for (int i = 0; i < n; i++) {
-                y[i] = interval(gates_vector[starter_index].second[i].lb(),
-                                gates_vector[starter_index].second[i].ub());
-            }
-
-            //integration object
-            vnodelp::VNODE *vnode_bwd_solver = new vnodelp::VNODE(ad);
-            vnode_bwd_solver->setOneStep(vnodelp::on);
-            vnode_bwd_solver->setOrder(ord);
-	    vnode_bwd_solver->setHmin(0.0005);
-            //main integration loop
-            while(ti!=interval(t)){
-                //"slice" integration loop
-                while(ti!=tprev){
-                    vnode_bwd_solver->integrate(ti,y,tprev);
-                    if (!vnode_bwd_solver->successful()) {
-                        cout << "VNODE-LP could not reach t = " << tprev
-                             << endl;//need to figure out what exception we can add to this case
-                        tempo_x.set_empty();
-                        return ;
-                    }
-  //                  for (int ith_sol=0; ith_sol<n; ith_sol++)
-    //                    cout <<"solution enclosure at t = " << inf(ti) << " ["<<inf(y[ith_sol]) << ", " <<sup(y[ith_sol])<<"]"<<endl;
-
-                    //global enclosure and time step
-                    iVector Y = vnode_bwd_solver->getAprioriEncl();
-                    interval Tj = vnode_bwd_solver->getT();
-
-
-                    //putting results in bwd_x
-
-                    //parameters to save data
-                    IntervalVector door(n);
-                    IntervalVector boxe(n);
-                    for(int k=0; k<n; k++) {
-                        door[k]=Interval(inf(y[k]), sup(y[k]));
-                        boxe[k]=Interval(inf(Y[k]), sup(Y[k]));
-
-                    }
-
-                        if (!door.intersects(x(inf(ti)))) {
-                            x.set_empty();
-                           // cout << "EMPTY"<<endl;
-
-                            return;
-                        }
-                    if(inf(Tj)>inf(tprev))
-                        tempo_x.set(boxe,Interval(inf(Tj),sup(Tj)));
-                    else
-                        tempo_x.set(boxe,Interval(inf(tprev),sup(Tj)));
-                    tempo_x.set(door,inf(ti));
-
-                }
-
-
-
-                k--;
-      //          cout << "k "<< k << endl;
-                if(starter_index + k>=0)
-                    tprev=gates_vector[starter_index + k].first;
-
-            }
-	    delete vnode_bwd_solver;
+        if (gates_vector[starter_index].first>t) {
+            bool BWD=false;
+            bool direction=BWD;
+	   
+            successfull_integration=vnode_integration(ad,n,x, fwd_x,t,tend,starter_index,gates_vector,direction);
+	   
+            if(!successfull_integration)
+                return;
         }
-  // cout << tempo_x << endl;
-//cout << "x" << endl;
-//        tubex::Slice *x_slice=x[0].first_slice();
-//        while (x_slice!=NULL){
-//            cout << *x_slice<<endl;
-//
-//            x_slice=x_slice->next_slice();
-//        }
-//        cout << "///////////////////////" << endl;
-//        tubex::Slice *y_slice=x[1].first_slice();
-//        while (y_slice!=NULL){
-//            cout << *y_slice<<endl;
-//
-//            y_slice=y_slice->next_slice();
-//        }
-//        cout << "vnode x" << endl;
-//
-//        tubex::Slice *tx_slice=tempo_x[0].first_slice();
-//        while (tx_slice!=NULL){
-//            cout << *tx_slice<<endl;
-//
-//            tx_slice=tx_slice->next_slice();
-//        }
-//        cout << "///////////////////////" << endl;
-//
-//        tubex::Slice *ty_slice=tempo_x[1].first_slice();
-//        while (ty_slice!=NULL){
-//            cout << *ty_slice<<endl;
-//
-//            ty_slice=ty_slice->next_slice();
-//        }
-	x=tempo_x&x;
-//cout << "############################# x&vnodex "<< endl;
-//
-//        tubex::Slice *xv_slice=x[0].first_slice();
-//        while (xv_slice!=NULL){
-//            cout << *xv_slice<<endl;
-//
-//            xv_slice=xv_slice->next_slice();
-//        }
-//        tubex::Slice *yv_slice=x[1].first_slice();
-//        while (yv_slice!=NULL){
-//            cout << *yv_slice<<endl;
-//
-//            yv_slice=yv_slice->next_slice();
-//        }
-//    cout << " t : "<< domain.lb()<< "-> " << x(domain.lb()) << " t : " <<domain.ub()<<"-> " << x(domain.ub()) << " tube : " << x <<endl;
+
+        if(m_preserve_slicing){
+
+          x&=fwd_x;
+
+	}
+        else
+	  x = fwd_x & x;
 
     }
 }
-
-

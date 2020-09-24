@@ -17,6 +17,7 @@ void exp(int n, var_type*yp, const var_type*y, var_type t, void*param)
     yp[0] = (y[0]);
 }
 
+AD *ad=new FADBAD_AD(1,exp,exp);
 
 void contract(TubeVector& x, double t0, bool incremental)
 {
@@ -45,9 +46,21 @@ void contract(TubeVector& x, double t0, bool incremental)
 
     
 
-    AD *ad=new FADBAD_AD(n,exp,exp);
-    CtcVnodelp c;
 
+    CtcVnodelp c;
+    /*
+    if (x.nb_slices()>=5000)    c.preserve_slicing(true);
+    else  c.preserve_slicing(false);
+    c.m_slicevnode=false;
+    */
+   
+    if (x.volume() < DBL_MAX) {c.preserve_slicing(true);
+      c.set_ignoreslicing(true);
+    }
+    else {c.preserve_slicing(false);
+       c.set_ignoreslicing(false);
+    }
+    c.set_vnode_hmin(5.e-4);
     c.Contract(ad,t,tend,n,x,t0,incremental);
     
 }
@@ -79,13 +92,13 @@ int main()
     solver.set_propa_fxpt_ratio(0.99);
     //    solver.set_var3b_fxpt_ratio(0.999);
     solver.set_var3b_fxpt_ratio(-1);
-    solver.set_var3b_propa_fxpt_ratio(0.999);
+    solver.set_var3b_propa_fxpt_ratio(0.99);
 
   //  solver.set_var3b_timept(0);
     solver.set_trace(1);
     solver.set_max_slices(5000);
     //solver.set_max_slices(1);
-    solver.set_refining_mode(3);
+    solver.set_refining_mode(0);
     solver.set_bisection_timept(3);
     solver.set_contraction_mode(4);
     solver.set_stopping_mode(0);

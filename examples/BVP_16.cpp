@@ -18,6 +18,7 @@ void bvp16(int n, var_type*yp, const var_type*y, var_type t, void*param)
     yp[1] = y[0];
 }
 
+    AD *ad=new FADBAD_AD(2,bvp16,bvp16);
 
 void contract(TubeVector& x, double t0, bool incremental)
 {
@@ -31,9 +32,17 @@ void contract(TubeVector& x, double t0, bool incremental)
 
 
 
-    AD *ad=new FADBAD_AD(n,bvp16,bvp16);
+
     CtcVnodelp c;
 
+    
+    if (x.volume() < DBL_MAX) {c.preserve_slicing(true);
+      c.set_ignoreslicing(true);
+    }
+    else {c.preserve_slicing(false);
+       c.set_ignoreslicing(false);
+    }
+    c.set_vnode_hmin(1.e-3);
     c.Contract(ad,t,tend,n,x,t0,incremental);
 }
 
@@ -75,7 +84,7 @@ int main()
     //solver.set_max_slices(1);
     solver.set_refining_mode(0);
     solver.set_bisection_timept(3);
-    solver.set_contraction_mode(2);
+    solver.set_contraction_mode(4);
     solver.set_stopping_mode(0);
     solver.set_var3b_external_contraction(true);
     //    list<TubeVector> l_solutions = solver.solve(x, &contract);

@@ -1,4 +1,4 @@
-//created by bedouhene 09/12/2019
+//Created by bedouhene 09/12/2019
 
 #include <iostream>
 #include <vector>
@@ -18,6 +18,7 @@ void bvp15(int n, var_type*yp, const var_type*y, var_type t, void*param)
     yp[1] = -y[0];
 }
 
+    AD *ad=new FADBAD_AD(2,bvp15,bvp15);
 
 void contract(TubeVector& x, double t0, bool incremental)
 {
@@ -31,11 +32,24 @@ void contract(TubeVector& x, double t0, bool incremental)
 
 
 
-    AD *ad=new FADBAD_AD(n,bvp15,bvp15);
-    CtcVnodelp c;
 
+    CtcVnodelp c;
+  
+    //    c.set_vnode_hmin(1.e-3);
+    if (x.volume() < DBL_MAX) {c.preserve_slicing(true);
+      c.set_ignoreslicing(true);
+    }
+    else {c.preserve_slicing(false);
+       c.set_ignoreslicing(false);
+    }
+    //    cout << " x before vnode " << x <<  x.volume() << endl;
     c.Contract(ad,t,tend,n,x,t0,incremental);
+    //    cout << " x after vnode " << x << " volume " << x.volume ()<< "  " << x.is_empty() << endl;
+    //    cout << "x[0] " << x[0] << " volume " << x[0].volume () << endl;
+    //    cout << "x[1] "<< x[1] << " volume " << x[1].volume () <<endl;
 }
+
+
 
 int main()
 
@@ -65,15 +79,15 @@ int main()
     tubex::Solver solver(epsilon);
 
     solver.set_refining_fxpt_ratio(2.);
-    solver.set_propa_fxpt_ratio(0.99);
+    solver.set_propa_fxpt_ratio(0.);
     // solver.set_var3b_fxpt_ratio(0.999);
     solver.set_var3b_fxpt_ratio(-1);
     solver.set_var3b_propa_fxpt_ratio(0.999);
     //solver.set_var3b_timept(0);
     solver.set_trace(1);
-     solver.set_max_slices(40000);
+    solver.set_max_slices(40000);
     //    solver.set_max_slices(1);
-    solver.set_refining_mode(3);
+    solver.set_refining_mode(0);
     solver.set_bisection_timept(3);
     solver.set_contraction_mode(4);
     solver.set_stopping_mode(0);
@@ -81,7 +95,7 @@ int main()
     list<TubeVector> l_solutions = solver.solve(x,f, &contract);
     //    list<TubeVector> l_solutions = solver.solve(x, &contract);
 
-    cout << "nb sol " << l_solutions.size() << endl;
+        cout << "nb sol " << l_solutions.size() << endl;
     double t_max_diam;
     cout << l_solutions.front()<<" ti-> " <<l_solutions.front()(domain.lb()) << " tf -> "<< l_solutions.front()(domain.ub()) <<" max diam : " <<l_solutions.front()[0].max_gate_diam(t_max_diam)<<" , " <<l_solutions.front()[1].max_gate_diam(t_max_diam) << " volume :  "<< l_solutions.front().volume()<<" ti (diam) -> " <<l_solutions.front()(domain.lb()).diam() << " tf (diam) -> "<< l_solutions.front()(domain.ub()).diam() << endl;
 
