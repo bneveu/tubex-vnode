@@ -53,17 +53,14 @@ void contract(TubeVector& x, double t0, bool incremental)
 
     AD *ad=new FADBAD_AD(n,exp,exp);
     CtcVnodelp c;
-    /*
-    if (x.nb_slices() >= 400)    c.preserve_slicing(true);
-    else c.preserve_slicing(false);
-    c.m_slicevnode=false;
-    */
+    
     if (x.volume() < DBL_MAX) {c.preserve_slicing(true);
       c.set_ignoreslicing(true);
     }
     else {c.preserve_slicing(false);
        c.set_ignoreslicing(false);
     }
+    c.set_vnode_hmin(5.e-4);
     c.Contract(ad,t,tend,n,x,t0,incremental);
 
 }

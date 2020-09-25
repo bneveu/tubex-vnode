@@ -12,13 +12,13 @@ using namespace tubex;
 using namespace vnodelp;
 template<typename var_type>
 
-void bvp18(int n, var_type*yp, const var_type*y, var_type t, void*param)
+void bvp19(int n, var_type*yp, const var_type*y, var_type t, void*param)
 {
-  interval ksi = 1;
+  interval ksi = 0.1;
     yp[0] = y[1];
     yp[1] = -ksi*exp(y[0]);
 }
-AD *ad=new FADBAD_AD(2,bvp18,bvp18);
+AD *ad=new FADBAD_AD(2,bvp19,bvp19);
 
 void contract(TubeVector& x, double t0, bool incremental)
 {
@@ -31,9 +31,9 @@ void contract(TubeVector& x, double t0, bool incremental)
 
     CtcVnodelp c;
     
-  
+   
 
-     if (x.volume() < DBL_MAX) {c.preserve_slicing(true);
+    if (x.volume() < DBL_MAX) {c.preserve_slicing(true);
       c.set_ignoreslicing(true);
     }
     else {c.preserve_slicing(false);
@@ -49,7 +49,7 @@ void contract(TubeVector& x, double t0, bool incremental)
 }
 
 int main() {
-  TFunction f("x1", "x2" ,"(x2;-(exp(x1)))");
+  TFunction f("x1", "x2" ,"(x2;-(0.1*exp(x1)))");
     float temps;
     clock_t t1, t2;
     t1=clock();//sert à calculer le temps d'exécution
@@ -68,9 +68,10 @@ int main() {
     x.set(v,1.);
     
     
-    double eps0=0.05;
-    double eps1=0.05;
-       
+    
+    double eps0=0.1;
+    double eps1=0.1;
+    
 
     /* =========== SOLVER =========== */
     Vector epsilon(2);
@@ -80,7 +81,7 @@ int main() {
     tubex::Solver solver(epsilon);
 
     solver.set_refining_fxpt_ratio(2.0);
-    solver.set_propa_fxpt_ratio(0.99);
+    solver.set_propa_fxpt_ratio(0.9);
     //    solver.set_var3b_fxpt_ratio(0.999);
     solver.set_var3b_fxpt_ratio(-1);
 

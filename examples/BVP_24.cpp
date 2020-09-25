@@ -49,7 +49,8 @@ void contract(TubeVector& x, double t0, bool incremental)
 
 int main()
 
-{    float temps;
+{    
+  float temps;
     clock_t t1, t2;
     t1=clock();//sert à calculer le temps d'exécution
     TFunction f("x1", "x2" ,"(x2;-20*(x2+x1^2))");
@@ -59,12 +60,12 @@ int main()
     IntervalVector v(2);
     v[0]=Interval(0.,0.);
      //    v[1]=Interval(-1e300,1e300);
-    //    v[1]=Interval(-20,20);
-    v[1]=Interval(-40,40);
+    v[1]=Interval(-20,20);
+    //v[1]=Interval(-40,40);
     x.set(v, 0.); // ini
     v[0]=Interval(0.5,0.5);
-    //    v[1]=Interval(-20,20);
-    v[1]=Interval(-40,40);
+    v[1]=Interval(-20,20);
+    //v[1]=Interval(-40,40);
     x.set(v,1.);
 
     double eps0=0.05;

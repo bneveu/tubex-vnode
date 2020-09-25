@@ -31,7 +31,13 @@ void contract(TubeVector& x, double t0, bool incremental)
 
     AD *ad=new FADBAD_AD(n,ivp14,ivp14);
     CtcVnodelp c;
-  
+    if (x.volume() < DBL_MAX) {c.preserve_slicing(true);
+      c.set_ignoreslicing(true);
+    }
+    else {c.preserve_slicing(false);
+       c.set_ignoreslicing(false);
+    }
+    c.set_vnode_hmin(5.e-4);
     c.Contract(ad,t,tend,n,x,t0,incremental);
   
 }
@@ -67,7 +73,7 @@ int main()
     solver.set_max_slices(1000);
     solver.set_refining_mode(0);
     solver.set_bisection_timept(0);
-    solver.set_contraction_mode(2);
+    solver.set_contraction_mode(4);
     solver.set_stopping_mode(0);
     //    cout << " before solve " << x << endl;
 

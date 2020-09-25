@@ -48,7 +48,7 @@ void contract(TubeVector& x, double t0, bool incremental)
        c.set_ignoreslicing(false);
     }
   c.set_vnode_hmin(5.e-4);
-    c.Contract(ad,t,tend,n,x,t0,incremental);
+  c.Contract(ad,t,tend,n,x,t0,incremental);
 }
 
 int main()

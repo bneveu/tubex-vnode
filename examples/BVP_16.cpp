@@ -42,7 +42,7 @@ void contract(TubeVector& x, double t0, bool incremental)
     else {c.preserve_slicing(false);
        c.set_ignoreslicing(false);
     }
-    c.set_vnode_hmin(1.e-3);
+    c.set_vnode_hmin(5.e-4);
     c.Contract(ad,t,tend,n,x,t0,incremental);
 }
 

@@ -112,6 +112,7 @@ add_executable(b15 examples/BVP_15.cpp )
 add_executable(b16 examples/BVP_16.cpp )
 add_executable(b17 examples/BVP_17.cpp )
 add_executable(b18 examples/BVP_18.cpp )
+add_executable(b19 examples/BVP_19.cpp )
 
 add_executable(bID examples/BVP_ID.cpp )
 add_executable(b23 examples/BVP_23.cpp )
@@ -126,7 +127,7 @@ target_link_libraries(b15  ${VNODE_LIBS} CtcVnodelp)
 target_link_libraries(b16  ${VNODE_LIBS} CtcVnodelp)
 target_link_libraries(b17  ${VNODE_LIBS} CtcVnodelp)
 target_link_libraries(b18  ${VNODE_LIBS} CtcVnodelp)
-
+target_link_libraries(b19  ${VNODE_LIBS} CtcVnodelp)
 
 target_link_libraries(bID  ${VNODE_LIBS} CtcVnodelp)
 target_link_libraries(b23  ${VNODE_LIBS} CtcVnodelp)

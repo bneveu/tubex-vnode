@@ -38,12 +38,12 @@ void contract(TubeVector& x, double t0, bool incremental)
     }
    /*
     c.preserve_slicing(false);
- 
     c.set_ignoreslicing(false);
    */
-    cout << "x0 before vnode " << x [0](0) << "gate" <<  x[0].first_slice()->tdomain() << "  " << x[0].first_slice()->input_gate() << endl;
+   //    cout << "x0 before vnode " << x [0](0) << "gate" <<  x[0].first_slice()->tdomain() << "  " << x[0].first_slice()->input_gate() << endl;
+   c.set_vnode_hmin(5.e-4);
     c.Contract(ad,t,tend,n,x,t0,incremental);
-    cout << "x0 after vnode " << x [0](0) << "gate" <<  x[0].first_slice()->tdomain() << " " <<x[0].first_slice()->input_gate() << endl;
+    //    cout << "x0 after vnode " << x [0](0) << "gate" <<  x[0].first_slice()->tdomain() << " " <<x[0].first_slice()->input_gate() << endl;
    
 
 
@@ -73,7 +73,7 @@ int main()
     tubex::Solver solver(epsilon);
 
     solver.set_refining_fxpt_ratio(2.);
-    solver.set_propa_fxpt_ratio(0.99);
+    solver.set_propa_fxpt_ratio(0.9);
     //    solver.set_var3b_fxpt_ratio(0.999);
     solver.set_var3b_fxpt_ratio(-1);
     solver.set_var3b_propa_fxpt_ratio(0.999);
@@ -88,7 +88,7 @@ int main()
     solver.set_stopping_mode(0);
     cout << " avant solve " << x[0](0) << endl;
     list<TubeVector> l_solutions = solver.solve(x, f, &contract);
-    //    list<TubeVector> l_solutions = solver.solve(x,  &contract);
+    //list<TubeVector> l_solutions = solver.solve(x,  &contract);
     // list<TubeVector> l_solutions = solver.solve(x, f);
     cout << l_solutions.front()(domain.ub()) << endl;
     cout << "nb sol " << l_solutions.size() << endl;
