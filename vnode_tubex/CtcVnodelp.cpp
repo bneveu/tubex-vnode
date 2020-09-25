@@ -5,11 +5,11 @@ namespace tubex {
     CtcVnodelp::CtcVnodelp() : DynCtc() {
         //default Vnode order is 20, we set it here to 11
         Vord = 11;
-        ishminset = false;
-        Vatol = 1e-12;
+	Vatol = 1e-12;
         Vrtol = 1e-12;
         IgnoreSlicing = false;
-
+	Vhmin = 1e-3;
+	ishminset = true;
     }//ctcvnode
 
     void CtcVnodelp::set_vnode_order(unsigned int vorder) {
@@ -29,6 +29,10 @@ namespace tubex {
     void CtcVnodelp::set_ignoreslicing(bool ignoreslicing) {
         IgnoreSlicing = ignoreslicing;
     }
+     void CtcVnodelp::disable_hmin() {
+        ishminset=false;
+    }
+
 
     void CtcVnodelp::starting_condition(int n, TubeVector &x, double t, double tend, double t0,vector<double> &time_gate,vector<ibex::IntervalVector> &si,Vstate &gates_vector, int &starter_index, bool incremental){
 

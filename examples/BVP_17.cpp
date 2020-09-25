@@ -58,11 +58,15 @@ int main()
     cout <<  " last slice " << *(x[0].last_slice()) << endl;
     IntervalVector v(2);
      v[0]=Interval(1.,1.);
-     //    v[1]=Interval(-1e300,1e300);
-    v[1]=Interval(-10.,10.);
+     // v[1]=Interval(-1e300,1e300);
+     v[1]=Interval(-10.,10.);
+     //    v[1]=Interval(-1.e8,1.e8);
+
     x.set(v, 0.); // ini
     v[0]=Interval(0.,0.);
     v[1]=Interval(-10.,10.);
+    //    v[1]=Interval(-1.e8,1.e8);
+    // v[1]=Interval(-1e300,1e300);
     x.set(v,1.);
 
     

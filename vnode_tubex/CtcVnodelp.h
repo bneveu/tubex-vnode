@@ -26,7 +26,8 @@ namespace tubex {
 
         void set_ignoreslicing(bool ignorslicing);
 
-
+	void disable_hmin();
+ 
         void Contract(vnodelp::AD *ad,double t,double tend,int n, Tube &x, double t0, bool incremental);
 
         void Contract(vnodelp::AD *ad,double t,double tend,int n, TubeVector &x,double t0, bool incremental);
