@@ -34,15 +34,17 @@ void contract(TubeVector& x, double t0, bool incremental)
    if (x.volume() < DBL_MAX) {c.preserve_slicing(true);
      c.set_ignoreslicing(true);}
     else {c.preserve_slicing(false);
-      c.set_ignoreslicing(false);
+      //     c.set_ignoreslicing(false);
+     c.set_ignoreslicing(true);
     }
    /*
     c.preserve_slicing(false);
     c.set_ignoreslicing(false);
    */
    //    cout << "x0 before vnode " << x [0](0) << "gate" <<  x[0].first_slice()->tdomain() << "  " << x[0].first_slice()->input_gate() << endl;
-   c.set_vnode_hmin(5.e-4);
-    c.Contract(ad,t,tend,n,x,t0,incremental);
+   //   c.set_vnode_hmin(5.e-4);
+   c.set_vnode_hmin(1.e-3);
+   c.Contract(ad,t,tend,n,x,t0,incremental);
     //    cout << "x0 after vnode " << x [0](0) << "gate" <<  x[0].first_slice()->tdomain() << " " <<x[0].first_slice()->input_gate() << endl;
    
 
@@ -73,7 +75,7 @@ int main()
     tubex::Solver solver(epsilon);
 
     solver.set_refining_fxpt_ratio(2.);
-    solver.set_propa_fxpt_ratio(0.9);
+    solver.set_propa_fxpt_ratio(0.8);
     //    solver.set_var3b_fxpt_ratio(0.999);
     solver.set_var3b_fxpt_ratio(-1);
     solver.set_var3b_propa_fxpt_ratio(0.999);

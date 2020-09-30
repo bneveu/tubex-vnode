@@ -59,7 +59,8 @@ add_definitions(-DMAXORDER=100)
 include_directories(${VNODE_BUILD_DIR}/vnodelp/include)
 include_directories(${VNODE_BUILD_DIR}/vnodelp/FADBAD++)
 link_directories(${VNODE_LIB_DIR})
-set(VNODE_LIBS vnode lapack blas gfortran prim tubex-solve tubex tubex-rob ibex prim)
+
+set(VNODE_LIBS vnode lapack blas gfortran tubex-solve tubex tubex-rob ibex prim)
 
 include_directories(vnode_tubex)
 
@@ -113,12 +114,13 @@ add_executable(b16 examples/BVP_16.cpp )
 add_executable(b17 examples/BVP_17.cpp )
 add_executable(b18 examples/BVP_18.cpp )
 add_executable(b19 examples/BVP_19.cpp )
+add_executable(b20 examples/BVP_20.cpp )
 
 add_executable(bID examples/BVP_ID.cpp )
 add_executable(b23 examples/BVP_23.cpp )
 add_executable(b24 examples/BVP_24.cpp )
 add_executable(b25 examples/BVP_25.cpp )
-
+add_executable(b26 examples/BVP_26.cpp )
 
 
 target_link_libraries(b04  ${VNODE_LIBS} CtcVnodelp)
@@ -128,11 +130,13 @@ target_link_libraries(b16  ${VNODE_LIBS} CtcVnodelp)
 target_link_libraries(b17  ${VNODE_LIBS} CtcVnodelp)
 target_link_libraries(b18  ${VNODE_LIBS} CtcVnodelp)
 target_link_libraries(b19  ${VNODE_LIBS} CtcVnodelp)
+target_link_libraries(b20  ${VNODE_LIBS} CtcVnodelp)
 
 target_link_libraries(bID  ${VNODE_LIBS} CtcVnodelp)
 target_link_libraries(b23  ${VNODE_LIBS} CtcVnodelp)
 target_link_libraries(b24  ${VNODE_LIBS} CtcVnodelp)
 target_link_libraries(b25  ${VNODE_LIBS} CtcVnodelp)
+target_link_libraries(b26  ${VNODE_LIBS} CtcVnodelp)
 
 #PA Add
 set(CMAKE_CXX_STANDARD 11)

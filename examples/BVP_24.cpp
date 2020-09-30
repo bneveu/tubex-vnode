@@ -38,10 +38,11 @@ void contract(TubeVector& x, double t0, bool incremental)
       c.set_ignoreslicing(true);
     }
     else {c.preserve_slicing(false);
-      c.set_ignoreslicing(false);
+      c.set_ignoreslicing(true);
     }
      
-    c.set_vnode_hmin(5.e-4);
+    //    c.set_vnode_hmin(5.e-4);
+    c.set_vnode_hmin(1.e-3);
     c.Contract(ad,t,tend,n,x,t0,incremental);
 
     
@@ -80,11 +81,11 @@ int main()
 
     solver.set_refining_fxpt_ratio(2.);
 
-    solver.set_propa_fxpt_ratio(0.99);
+    solver.set_propa_fxpt_ratio(0.98);
 
     //    solver.set_var3b_fxpt_ratio(-1);
-    solver.set_var3b_fxpt_ratio(0.99);
-    solver.set_var3b_propa_fxpt_ratio(0.99);
+    solver.set_var3b_fxpt_ratio(0.98);
+    solver.set_var3b_propa_fxpt_ratio(0.98);
     solver.set_var3b_timept(0);
     solver.set_trace(1);
     solver.set_max_slices(20000);

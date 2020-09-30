@@ -33,18 +33,20 @@ void contract(TubeVector& x, double t0, bool incremental)
     
   
 
-     if (x.volume() < DBL_MAX) {c.preserve_slicing(true);
+    if (x.volume() < DBL_MAX) {c.preserve_slicing(true);
       c.set_ignoreslicing(true);
     }
     else {c.preserve_slicing(false);
-       c.set_ignoreslicing(false);
+      //       c.set_ignoreslicing(false);
+       c.set_ignoreslicing(true);
     }
      /*
     c.preserve_slicing(false);
     c.set_ignoreslicing(false);
 
      */
-    c.set_vnode_hmin(5.e-4);
+    //    c.set_vnode_hmin(5.e-4);
+    c.set_vnode_hmin(1.e-3);
     c.Contract(ad,t,tend,n,x,t0,incremental);
 }
 
@@ -62,9 +64,11 @@ int main() {
     v[0]=Interval(0.,0.);
     //    v[1]=Interval(-1.e8,1.e8);
     v[1]=Interval(-20.,20.);
+    //    v[1]=Interval(-100.,100.);
     x.set(v, 0.); // ini
     v[0]=Interval(0.,0.);
     v[1]=Interval(-20.,20.);
+    //    v[1]=Interval(-100.,100.);
     x.set(v,1.);
     
     
@@ -79,15 +83,17 @@ int main() {
 
     tubex::Solver solver(epsilon);
 
-    solver.set_refining_fxpt_ratio(2.0);
-    solver.set_propa_fxpt_ratio(0.99);
+    //    solver.set_refining_fxpt_ratio(0.999);
+    solver.set_refining_fxpt_ratio(2);
+    //    solver.set_refining_fxpt_ratio(2.0);
+    solver.set_propa_fxpt_ratio(0.98);
     //    solver.set_var3b_fxpt_ratio(0.999);
     solver.set_var3b_fxpt_ratio(-1);
 
     solver.set_var3b_propa_fxpt_ratio(0.999);
     
 
-   // solver.set_var3b_timept(0);
+    solver.set_var3b_timept(0);
     solver.set_trace(1);
     solver.set_max_slices(2000);
     //    solver.set_max_slices(1);

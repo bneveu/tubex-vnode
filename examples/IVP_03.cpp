@@ -18,7 +18,7 @@ void ivp03(int n, var_type*yp, const var_type*y, var_type t, void*param)
 
 }
 
-
+AD *ad=new FADBAD_AD(1,ivp03,ivp03);
 void contract(TubeVector& x, double t0, bool incremental)
 {
 
@@ -31,17 +31,20 @@ void contract(TubeVector& x, double t0, bool incremental)
 
 
 
-    AD *ad=new FADBAD_AD(n,ivp03,ivp03);
-    CtcVnodelp c;
 
+    CtcVnodelp c;
+    if (x.volume() < DBL_MAX) {c.preserve_slicing(true);
+      c.set_ignoreslicing(true);}
+    else {c.preserve_slicing(false);
+     c.set_ignoreslicing(true);
+    }
     c.Contract(ad,t,tend,n,x,t0,incremental);
 }
 
 int main()
 
 {    float temps;
-    clock_t t1, t2;
-    t1=clock();//sert à calculer le temps d'exécution
+
     TFunction f("x", "-sin(x)");
     Interval domain(0.,10.);
     TubeVector x(domain, 1);
@@ -60,14 +63,14 @@ int main()
 
     tubex::Solver solver(epsilon);
 
-   // solver.set_refining_fxpt_ratio(0.);
+    solver.set_refining_fxpt_ratio(2.);
     solver.set_propa_fxpt_ratio(0.);
     solver.set_var3b_fxpt_ratio(-1);
 
     //solver.set_var3b_timept(0);
     solver.set_trace(1);
-    solver.set_max_slices(1000);
-   // solver.set_refining_mode(0);
+    solver.set_max_slices(2000);
+    solver.set_refining_mode(0);
     solver.set_bisection_timept(0);
     solver.set_contraction_mode(4);
 
@@ -80,7 +83,7 @@ int main()
     cout << l_solutions.front()<<" ti-> " <<l_solutions.front()(domain.lb()) << " tf -> "<< l_solutions.front()(domain.ub()) <<" max diam : " <<l_solutions.front().max_gate_diam(t_max_diam) << " volume :  "<< l_solutions.front().volume()<<" ti (diam) -> " <<l_solutions.front()(domain.lb()).diam() << " tf (diam) -> "<< l_solutions.front()(domain.ub()).diam() << endl;
 
 
-    t2 = clock();
+
   
     return 0;
 }

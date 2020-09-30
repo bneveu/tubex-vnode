@@ -17,7 +17,7 @@ void ivp02(int n, var_type*yp, const var_type*y, var_type t, void*param)
     yp[0] = -sin(y[0]);
 
 }
-
+AD *ad=new FADBAD_AD(1,ivp02,ivp02);
 
 void contract(TubeVector& x, double t0, bool incremental)
 {
@@ -29,9 +29,13 @@ void contract(TubeVector& x, double t0, bool incremental)
 
 
 
-    AD *ad=new FADBAD_AD(n,ivp02,ivp02);
-    CtcVnodelp c;
 
+    CtcVnodelp c;
+    if (x.volume() < DBL_MAX) {c.preserve_slicing(true);
+      c.set_ignoreslicing(true);}
+    else {c.preserve_slicing(false);
+     c.set_ignoreslicing(true);
+    }
     c.Contract(ad,t,tend,n,x,t0,incremental);
 }
 
@@ -59,8 +63,8 @@ int main()
 
     tubex::Solver solver(epsilon);
 
-    //solver.set_refining_fxpt_ratio(0);
-    solver.set_propa_fxpt_ratio(0.0);
+    solver.set_refining_fxpt_ratio(2);
+    solver.set_propa_fxpt_ratio(0.9);
     solver.set_var3b_fxpt_ratio(-1);
 
    // solver.set_var3b_timept(0);
@@ -69,7 +73,8 @@ int main()
     solver.set_max_slices(10000);
     //solver.set_refining_mode(0.9);
     solver.set_bisection_timept(0);
-    solver.set_contraction_mode(2);
+    solver.set_contraction_mode(4);
+    solver.set_stopping_mode(0);
     
     //    list<TubeVector> l_solutions = solver.solve(x, &contract);
     list<TubeVector> l_solutions = solver.solve(x, f, &contract);

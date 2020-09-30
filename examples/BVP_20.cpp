@@ -14,7 +14,7 @@ template<typename var_type>
 
 void bvp19(int n, var_type*yp, const var_type*y, var_type t, void*param)
 {
-  interval ksi = 0.1;
+  interval ksi = 0.01;
     yp[0] = y[1];
     yp[1] = -ksi*exp(y[0]);
 }
@@ -50,7 +50,7 @@ void contract(TubeVector& x, double t0, bool incremental)
 }
 
 int main() {
-  TFunction f("x1", "x2" ,"(x2;-(0.1*exp(x1)))");
+  TFunction f("x1", "x2" ,"(x2;-(0.01*exp(x1)))");
     float temps;
     clock_t t1, t2;
     t1=clock();//sert à calculer le temps d'exécution
@@ -62,16 +62,16 @@ int main() {
     IntervalVector v(2);
     v[0]=Interval(0.,0.);
     //    v[1]=Interval(-1.e8,1.e8);
-    v[1]=Interval(-20.,20.);
+    v[1]=Interval(-30.,30.);
     x.set(v, 0.); // ini
     v[0]=Interval(0.,0.);
-    v[1]=Interval(-20.,20.);
+    v[1]=Interval(-30.,30.);
     x.set(v,1.);
     
     
     
-    double eps0=0.05;
-    double eps1=0.05;
+    double eps0=0.1;
+    double eps1=0.1;
     
 
     /* =========== SOLVER =========== */
@@ -83,8 +83,8 @@ int main() {
 
     solver.set_refining_fxpt_ratio(2.0);
     solver.set_propa_fxpt_ratio(0.98);
-    //    solver.set_var3b_fxpt_ratio(0.999);
-    solver.set_var3b_fxpt_ratio(-1);
+    solver.set_var3b_fxpt_ratio(0.999);
+    //    solver.set_var3b_fxpt_ratio(-1);
 
     solver.set_var3b_propa_fxpt_ratio(0.999);
     

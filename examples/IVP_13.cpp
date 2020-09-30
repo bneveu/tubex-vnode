@@ -35,7 +35,7 @@ void contract(TubeVector& x, double t0, bool incremental)
     if (x.volume() < DBL_MAX) {c.preserve_slicing(true);
       c.set_ignoreslicing(true);}
     else {c.preserve_slicing(false);
-      c.set_ignoreslicing(false);
+      c.set_ignoreslicing(true);
     }
     
     /*    

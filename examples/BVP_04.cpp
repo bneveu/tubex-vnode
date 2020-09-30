@@ -58,9 +58,10 @@ void contract(TubeVector& x, double t0, bool incremental)
       c.set_ignoreslicing(true);
     }
     else {c.preserve_slicing(false);
-       c.set_ignoreslicing(false);
+       c.set_ignoreslicing(true);
     }
-    c.set_vnode_hmin(5.e-4);
+    //y
+    c.set_vnode_hmin(1.e-3);
     c.Contract(ad,t,tend,n,x,t0,incremental);
     
 }
@@ -78,7 +79,7 @@ int main()
     Vector epsilon(n,0.0005);
     //Vector epsilon(n,1.e-12);
     Interval domain(0.,1.);
-    //    TubeVector x(domain, n, Interval (-1.e100,1.e100));
+
     TubeVector x(domain, n);
     TrajectoryVector truth1(domain, TFunction("exp(t)/sqrt(1+exp(2))"));
     TrajectoryVector truth2(domain, TFunction("-exp(t)/sqrt(1+exp(2))"));

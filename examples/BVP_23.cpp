@@ -35,32 +35,22 @@ void contract(TubeVector& x, double t0, bool incremental)
     CtcVnodelp c;
         
     
-    /*
-    if (x.volume()< DBL_MAX && x.nb_slices() >= 5000) { 
-      c.preserve_slicing(true);
-      c.set_ignoreslicing(true);
-    else {c.preserve_slicing(false);
-    c.set_ignoreslicing(false);
-    }
-    */
     
-   
+    
     if (x.volume() < DBL_MAX) {
       c.set_ignoreslicing(true);
-      //    if (x.nb_slices()<=5000)  {
-      //	c.preserve_slicing(false);
-      //      }
-
-      //      else
-      //	{
       c.preserve_slicing(true);
-      //}
     }
     else {c.preserve_slicing(false);
-       c.set_ignoreslicing(false);
+      c.set_ignoreslicing(true);
     }
-
-    c.set_vnode_hmin(5.e-4);
+    
+    /*
+    c.set_ignoreslicing(false);
+    c.preserve_slicing(true);
+    */
+    //    c.set_vnode_hmin(5.e-4);
+    c.set_vnode_hmin(1.e-3);
 
     c.Contract(ad,t,tend,n,x,t0,incremental);
 }
@@ -80,8 +70,10 @@ int main()
     //    v[1]=Interval(-1e300,1e300);
     v[1]=Interval(-20,20);
     x.set(v, 0.); // ini
+    //    v[0]=Interval(0.5,0.5);
     v[0]=Interval(0.5,0.5);
     v[1]=Interval(-20,20);
+    
     // v[1]=Interval(-10.,10.);
     x.set(v,1.);
 
@@ -96,24 +88,26 @@ int main()
 
     tubex::Solver solver(epsilon);
 
-    solver.set_refining_fxpt_ratio(2.);
-    solver.set_propa_fxpt_ratio(0.99);
+    //    solver.set_refining_fxpt_ratio(0.999);
+    solver.set_refining_fxpt_ratio(2);
+    solver.set_propa_fxpt_ratio(0.98);
     //solver.set_propa_fxpt_ratio(0.);
 
-    solver.set_var3b_fxpt_ratio(0.999);
+    solver.set_var3b_fxpt_ratio(0.998);
     //    solver.set_var3b_fxpt_ratio(-1);
 
     solver.set_var3b_external_contraction (true);
 
-    solver.set_var3b_propa_fxpt_ratio(0.999);
+    solver.set_var3b_propa_fxpt_ratio(0.998);
     solver.set_var3b_timept(0);
     solver.set_trace(1);
 
     solver.set_max_slices(20000);
     //    solver.set_max_slices(100000);
     //solver.set_max_slices(1);
-    solver.set_refining_mode(0);
-    solver.set_bisection_timept(3);
+    solver.set_refining_mode(2);
+    //    solver.set_bisection_timept(3);
+    solver.set_bisection_timept(0);
     solver.set_contraction_mode(2);
     solver.set_stopping_mode(0);
     std::ofstream Out("err.txt");

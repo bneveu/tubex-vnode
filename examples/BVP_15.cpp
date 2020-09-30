@@ -40,7 +40,7 @@ void contract(TubeVector& x, double t0, bool incremental)
       c.set_ignoreslicing(true);
     }
     else {c.preserve_slicing(false);
-       c.set_ignoreslicing(false);
+       c.set_ignoreslicing(true);
     }
     //    cout << " x before vnode " << x <<  x.volume() << endl;
     c.Contract(ad,t,tend,n,x,t0,incremental);

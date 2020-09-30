@@ -18,7 +18,7 @@ void ivp10(int n, var_type*yp, const var_type*y, var_type t, void*param)
 
 }
 
-
+AD *ad=new FADBAD_AD(1,ivp10,ivp10);
 void contract(TubeVector& x, double t0, bool incremental)
 {
 
@@ -31,9 +31,13 @@ void contract(TubeVector& x, double t0, bool incremental)
 
 
 
-    AD *ad=new FADBAD_AD(n,ivp10,ivp10);
+    
     CtcVnodelp c;
-
+   if (x.volume() < DBL_MAX) {c.preserve_slicing(true);
+      c.set_ignoreslicing(true);}
+    else {c.preserve_slicing(false);
+     c.set_ignoreslicing(true);
+    }
     c.Contract(ad,t,tend,n,x,t0,incremental);
 }
 
@@ -52,13 +56,15 @@ int main()
     x.set(v, 0.); // ini
 
 
-    double eps=0.5;
+    //    double eps=0.5;*
+    double eps=0.2;
 
     /* =========== SOLVER =========== */
     Vector epsilon(1, eps);
 
 
     tubex::Solver solver(epsilon);
+
 
    // solver.set_refining_fxpt_ratio(0.);
    // solver.set_propa_fxpt_ratio(0.001);
