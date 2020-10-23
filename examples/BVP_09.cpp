@@ -58,11 +58,11 @@ int main()
   float temps;
     clock_t t1, t2;
     t1=clock();//sert à calculer le temps d'exécution
-    
-    cout << log(2./5.)<<endl;
+
     int n = 2;
     Interval domain(0.,6.);
-    TubeVector x(domain,n,IntervalVector(2,Interval(-1e5,1e5)));
+    TubeVector x(domain,n,IntervalVector(2,Interval(-1e5,1e5))); // initial tube in CP paper
+    //TubeVector x(domain,n);
 
 
     // Boundary condition:
@@ -75,13 +75,11 @@ int main()
     // Additional restriction (maximum value):
     Interval domain_restriction(1.,3.);
     IntervalVector max_restriction(2);
-    max_restriction[0] = Interval(-1e5,1e5);
+    max_restriction[0] = Interval(-1e5,1e5);  // restriction in CP paper
+    //    max_restriction[0] = Interval(-1.e307,1.e307); // the diameter must be bounded somewhere
     max_restriction[1] = Interval(1.1,1.3);
 
-//     domain_restriction(1.);
-//    IntervalVector max_restriction(2);
-//    max_restriction[0] = Interval(-9999.,9999.);
-//    max_restriction[1] = Interval(1.1,1.3);
+
     x.set(max_restriction,domain_restriction);
     /* =========== SOLVER =========== */
 
@@ -99,7 +97,7 @@ int main()
     solver.set_propa_fxpt_ratio(0.);
 
     solver.set_var3b_fxpt_ratio(0.98);
-    // solver.set_var3b_fxpt_ratio(-1);
+    //solver.set_var3b_fxpt_ratio(-1);
     solver.set_var3b_propa_fxpt_ratio(0.98);
     solver.set_var3b_external_contraction(true);
 //
@@ -111,10 +109,10 @@ int main()
     solver.set_bisection_timept(3);
     solver.set_contraction_mode(4);
     solver.set_stopping_mode(0);
-//
+
     list<TubeVector> l_solutions = solver.solve(x,f, &contract);
     // list<TubeVector> l_solutions = solver.solve(x,&contract);
-    //    list<TubeVector> l_solutions = solver.solve(x,f);
+    //list<TubeVector> l_solutions = solver.solve(x,f);
     cout << l_solutions.front() << endl;
     cout << "nb sol " << l_solutions.size() << endl;
     double t_max_diam;

@@ -59,7 +59,7 @@ namespace tubex {
                         si[0][i] = outgate;
                         time_gate[0] = t0;
                     } else {
-                        cout << "Can not found a gate for time bisection" << endl;
+                        cout << "Can not find a gate for time bisection" << endl;
                         incremental=false;
                         break;
                     }
@@ -224,7 +224,7 @@ namespace tubex {
             while (ti != tnext) {
 
                 vnode_solver->integrate(ti, y, tnext);
-
+	       
                 if (!vnode_solver->successful()) {
 		  //                    cout << "VNODE-LP could not reach t = " << tnext << endl;
                     transition_x.set_empty();
@@ -321,7 +321,7 @@ namespace tubex {
 
         starting_condition(n,x,t,tend,t0,time_gate,si,gates_vector,starter_index,incremental);
         //////////////////////////////////////////////
-
+	//	cout << " gate " << gates_vector[starter_index].second << " t " << gates_vector[starter_index].first << endl;
         TubeVector fwd_x(domain,n);
         fwd_x.set(gates_vector[starter_index].second, gates_vector[starter_index].first);
         TubeVector bwd_x(domain,n);
@@ -337,6 +337,7 @@ namespace tubex {
             bool direction=FWD;
 
             successfull_integration=vnode_integration(ad,n,x, fwd_x,t,tend,starter_index,gates_vector,direction);
+
             if(!successfull_integration)
                 return;
         }
@@ -347,6 +348,7 @@ namespace tubex {
             bool direction=BWD;
 
             successfull_integration=vnode_integration(ad,n,x, bwd_x,t,tend,starter_index,gates_vector,direction);
+
             if(!successfull_integration)
                 return;
         }

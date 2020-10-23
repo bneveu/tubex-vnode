@@ -62,11 +62,11 @@ int main()
     v[0]=Interval(0.,0.);
      //    v[1]=Interval(-1e300,1e300);
     v[1]=Interval(-20,20);
-    //v[1]=Interval(-40,40);
+    //    v[1]=Interval(-100,100);
     x.set(v, 0.); // ini
     v[0]=Interval(0.5,0.5);
     v[1]=Interval(-20,20);
-    //v[1]=Interval(-40,40);
+    //v[1]=Interval(-100,100);
     x.set(v,1.);
 
     double eps0=0.05;
@@ -81,16 +81,16 @@ int main()
 
     solver.set_refining_fxpt_ratio(2.);
 
-    solver.set_propa_fxpt_ratio(0.98);
+    solver.set_propa_fxpt_ratio(0.99);
 
     //    solver.set_var3b_fxpt_ratio(-1);
-    solver.set_var3b_fxpt_ratio(0.98);
-    solver.set_var3b_propa_fxpt_ratio(0.98);
+    solver.set_var3b_fxpt_ratio(0.99);
+    solver.set_var3b_propa_fxpt_ratio(0.99);
     solver.set_var3b_timept(0);
     solver.set_trace(1);
-    solver.set_max_slices(20000);
+    solver.set_max_slices(100000);
     //solver.set_max_slices(1);
-    solver.set_refining_mode(2);
+    solver.set_refining_mode(3);
     solver.set_bisection_timept(3);
     solver.set_contraction_mode(2);
     solver.set_var3b_external_contraction(true);

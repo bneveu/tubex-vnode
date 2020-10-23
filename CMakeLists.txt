@@ -121,6 +121,9 @@ add_executable(b23 examples/BVP_23.cpp )
 add_executable(b24 examples/BVP_24.cpp )
 add_executable(b25 examples/BVP_25.cpp )
 add_executable(b26 examples/BVP_26.cpp )
+add_executable(b32 examples/BVP_32.cpp )
+add_executable(b35 examples/BVP_35.cpp )
+add_executable(b40 examples/BVP_40.cpp )
 
 
 target_link_libraries(b04  ${VNODE_LIBS} CtcVnodelp)
@@ -137,6 +140,10 @@ target_link_libraries(b23  ${VNODE_LIBS} CtcVnodelp)
 target_link_libraries(b24  ${VNODE_LIBS} CtcVnodelp)
 target_link_libraries(b25  ${VNODE_LIBS} CtcVnodelp)
 target_link_libraries(b26  ${VNODE_LIBS} CtcVnodelp)
+target_link_libraries(b32  ${VNODE_LIBS} CtcVnodelp)
+target_link_libraries(b35  ${VNODE_LIBS} CtcVnodelp)
+target_link_libraries(b40  ${VNODE_LIBS} CtcVnodelp)
+
 
 #PA Add
 set(CMAKE_CXX_STANDARD 11)

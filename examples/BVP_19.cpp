@@ -70,8 +70,8 @@ int main() {
     
     
     
-    double eps0=0.05;
-    double eps1=0.05;
+    double eps0=0.1;
+    double eps1=0.1;
     
 
     /* =========== SOLVER =========== */
@@ -91,9 +91,9 @@ int main() {
 
    // solver.set_var3b_timept(0);
     solver.set_trace(1);
-    solver.set_max_slices(5000);
+    solver.set_max_slices(2000);
     //    solver.set_max_slices(1);
-    solver.set_bisection_timept(3);
+    solver.set_bisection_timept(-1);
 
     solver.set_refining_mode(0);
     solver.set_stopping_mode(0);
