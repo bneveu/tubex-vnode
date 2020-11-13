@@ -5,8 +5,6 @@ BVP faciles BVP04, BVP15, BVP16
 
 Les tableaux suivants donnent 
 
-
-
 problème  variante précision  méthode paramètres (propa-fxpt, 3B-fxpt, 3B-propa-fxpt) temps #bissections
 
 Les équations avec les bornes (tubes et portes) sont dans le document Overleaf.
@@ -16,18 +14,13 @@ Les problèmes proviennent de la base d'exemples BVPsolve avec leurs différente
 _________________________________________________________________________________________________
 
 variantes du problème 2 (ex BVP17)
-bvp02a         ksi=0.2       0.02    Vnode1+CtcDerivd1+3B-md 0. 0.9 0.9     0.16   0
-bvp02b         ksi=0.1       0.05    Vnode1+CtcDerivd1+3B-md 0. 0.9 0.9     0.24   0
-bvp02c         ksi=0.01      0.2     Vnode1+CtcDerivd1+3B-av 0. 0.9  0.9    1.47   0
-bvp02d         ksi=0.001       1     Vnode1+CIDG+3Bd1-av     0. 0.99 0.99  92.91   0   
+bvp02a       ksi=0.2       0.02    Vnode1+CtcDerivd1+3B-md 0. 0.9 0.9     0.16   0
+bvp02b       ksi=0.1       0.05    Vnode1+CtcDerivd1+3B-md 0. 0.9 0.9     0.24   0
+bvp02c       ksi=0.01      0.2     Vnode1+CtcDerivd1+3B-av 0. 0.9  0.9    1.47   0
+bvp02d       ksi=0.001       1     Vnode1+CIDG+3Bd1-av     0. 0.99 0.99  92.91   0   
 
 
-variantes du problème 34 à deux solutions (ex BVP18)
 
-bvp34a t0      ksi=1         0.05    Vnode1+CtcDerivd1    0.           0.47   33
-bvp34b t0      ksi=0.1       0.1     Vnode1+CtcDerivd1    0.           0.53   39
-bvp34c t0      ksi=0.01      0.1     Vnode1+CtcDerivd1    0.           3.58  112   
-bvp34d t0      ksi=0.001     0.2     Vnode1+CtcDerivd1    0.           3.89  133
 
 variantes du problème 22
 bvp22a      ksi=0.1       0.05    Vnode1+CIDG+3Bd1-av  0.  0.9  0.    3.39    0
@@ -47,10 +40,17 @@ bvp32d     ksi=0.002     0.1     pas résolu
 bvp32e     ksi=0.001     0.1     pas résolu
 
 
+variantes du problème 34 à deux solutions (ex BVP18)
+
+bvp34a t0      ksi=1         0.05    Vnode1+CtcDerivd1    0.           0.47   33
+bvp34b t0      ksi=0.1       0.1     Vnode1+CtcDerivd1    0.           0.53   39
+bvp34c t0      ksi=0.01      0.1     Vnode1+CtcDerivd1    0.           3.58  112   
+bvp34d t0      ksi=0.001     0.2     Vnode1+CtcDerivd1    0.           3.89  133
+
 variantes du problème 35 (dimension 2+1 : non autonome)
-BVP35      ksi=1         0.01    Vnode1+CtcDerivd1   0.9       0.05   0
-           ksi=0.1       0.1     Vnode1+CtcDerivd1   0         0.64   0
-           ksi=0.01      0.1     pas résolu
+bvp35a     ksi=1         0.01    Vnode1+CtcDerivd1   0.9       0.05   0
+bvp35b     ksi=0.1       0.1     Vnode1+CtcDerivd1   0         0.64   0
+bvp35c     ksi=0.01      0.1     pas résolu
 
 problème à 2 solutions de wikipedia shooting method
-BVP40  à 2 solutions     0.05     Vnode1+CtcDerivd1            1.61  64        
+bvp40  à 2 solutions     0.05     Vnode1+CtcDerivd1            1.61  64        

@@ -47,7 +47,8 @@ void contract(TubeVector& x, double t0, bool incremental)
     else {c.preserve_slicing(false);
        c.set_ignoreslicing(true);
     }
-  c.set_vnode_hmin(5.e-4);
+  //  c.set_vnode_hmin(5.e-4);
+  c.set_vnode_hmin(1.e-3);
   c.Contract(ad,t,tend,n,x,t0,incremental);
 }
 
@@ -55,9 +56,7 @@ int main()
 
 {   
   TFunction f("y1", "y2", "(-0.7*y1 ; 0.7*y1 - (ln(2)/5.)*y2)");
-  float temps;
-    clock_t t1, t2;
-    t1=clock();//sert à calculer le temps d'exécution
+ 
 
     int n = 2;
     Interval domain(0.,6.);
@@ -96,9 +95,9 @@ int main()
     //    solver.set_propa_fxpt_ratio(0.99);
     solver.set_propa_fxpt_ratio(0.);
 
-    solver.set_var3b_fxpt_ratio(0.99);
+    solver.set_var3b_fxpt_ratio(0.9);
     //solver.set_var3b_fxpt_ratio(-1);
-    solver.set_var3b_propa_fxpt_ratio(0.99);
+    solver.set_var3b_propa_fxpt_ratio(0.9);
     solver.set_var3b_external_contraction(true);
 //
   //  solver.set_var3b_timept(0);
@@ -107,7 +106,7 @@ int main()
     //    solver.set_max_slices(1);
     solver.set_refining_mode(0);
     solver.set_bisection_timept(3);
-    solver.set_contraction_mode(4);
+    solver.set_contraction_mode(2);
     solver.set_stopping_mode(0);
 
     list<TubeVector> l_solutions = solver.solve(x,f, &contract);
@@ -119,9 +118,7 @@ int main()
     cout << l_solutions.front()<<" ti-> " <<l_solutions.front()(domain.lb()) << " tf -> "<< l_solutions.front()(domain.ub()) <<" max diam : (" <<l_solutions.front()[0].max_gate_diam(t_max_diam)<<", "<<l_solutions.front()[1].max_gate_diam(t_max_diam)<< ")" << " volume :  "<< l_solutions.front().volume()<<" ti (diam) -> " <<l_solutions.front()(domain.lb()).diam() << " tf (diam) -> "<< l_solutions.front()(domain.ub()).diam() << endl;
 
 
-    t2 = clock();
-    temps = (float)(t2-t1)/CLOCKS_PER_SEC;
-    cout << "temps ="<< temps << endl<<endl;
+    
     return 0;
     
   
