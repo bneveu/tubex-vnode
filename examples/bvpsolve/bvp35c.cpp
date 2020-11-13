@@ -16,9 +16,7 @@ template<typename var_type>
 
 void bvp35(int n, var_type*yp, const var_type*y, var_type t, void*param)
 {
-  //  interval ksi = 1;
-  interval ksi = 10;
-  //interval ksi = 100;
+  interval ksi = 100;
   
     yp[0] = 1;
     yp[1] = y[2];
@@ -57,9 +55,7 @@ void contract(TubeVector& x, double t0, bool incremental)
 }
 
 int main() {
-  TFunction f("x1", "x2" ,"x3","(1;x3;10*(x1*x3-x2))");
-  //        TFunction f("x1", "x2" ,"x3","(1;x3;100*(x1*x3-x2))");
-  //  TFunction f("x1", "x2" ,"x3","(1;x3;x1*x3-x2)");
+  TFunction f("x1", "x2" ,"x3","(1;x3;100*(x1*x3-x2))");
 
    
     /* =========== PARAMETERS =========== */
@@ -80,35 +76,31 @@ int main() {
     bounds[1]=Interval(-1,3);
     bounds[2]=Interval(-1000,1000);
     
-    //TubeVector x(domain,bounds);
+    TubeVector x(domain,bounds);
 
-    TubeVector x(domain,IntervalVector(3,Interval(-100,100)));
+    //    TubeVector x(domain,IntervalVector(3,Interval(-100,100)));
 
     IntervalVector v(3);
     v[0]=Interval(-1.,-1.);
     v[1]=Interval(1);
-    v[2]=Interval(-100,100);
+    //v[2]=Interval(-100,100);
     //    v[2]=Interval(-10,10);
-    //v[2]=Interval(-1000,0.);
+    v[2]=Interval(-1000,0.);
     x.set(v, -1.); // ini
     v[0]=Interval(-1.,1.);
     v[1]=Interval(2);
-    v[2]=Interval(-100,100);
+    //v[2]=Interval(-100,100);
     //v[2]=Interval(-10,10);
-    //v[2]=Interval(0,1000);
+    v[2]=Interval(0,1000);
     x.set(v,1.);
     
     
     
-    double eps0=0.1; 
-    double eps1=0.1;
-    double eps2=0.1;
-    
-    /*
     double eps0=1; 
     double eps1=1;
     double eps2=1;
-    */
+    
+    
     /* =========== SOLVER =========== */
     Vector epsilon(3);
     epsilon[0]=eps0;
@@ -121,20 +113,20 @@ int main() {
     solver.set_refining_fxpt_ratio(2.0);
     //solver.set_propa_fxpt_ratio(0.999);
     solver.set_propa_fxpt_ratio(0.);
-    solver.set_var3b_fxpt_ratio(-1);
-     //  solver.set_var3b_fxpt_ratio(0.9);
+    //solver.set_var3b_fxpt_ratio(-1);
+    solver.set_var3b_fxpt_ratio(0.999);
 
-    solver.set_var3b_propa_fxpt_ratio(0.9);
+    solver.set_var3b_propa_fxpt_ratio(0.999);
 
     solver.set_var3b_timept(0);
     solver.set_trace(1);
-    solver.set_max_slices(5000);
+    solver.set_max_slices(20000);
     //    solver.set_max_slices(1);
     solver.set_bisection_timept(3);
 
-    solver.set_refining_mode(0);
+    solver.set_refining_mode(2);
     solver.set_stopping_mode(0);
-    solver.set_contraction_mode(4);
+    solver.set_contraction_mode(2);
     solver.set_var3b_external_contraction(true);
 
     std::ofstream Out("err.txt");

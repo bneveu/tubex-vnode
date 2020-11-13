@@ -12,27 +12,25 @@ using namespace tubex;
 using namespace vnodelp;
 template<typename var_type>
 
-void bvp19(int n, var_type*yp, const var_type*y, var_type t, void*param)
+void bvp20(int n, var_type*yp, const var_type*y, var_type t, void*param)
 {
-  interval ksi = 0.01;
-  //interval ksi = 0.001;
+  //interval ksi = 0.01;
+  interval ksi = 0.001;
     yp[0] = y[1];
     yp[1] = -ksi*exp(y[0]);
 }
-AD *ad=new FADBAD_AD(2,bvp19,bvp19);
+AD *ad=new FADBAD_AD(2,bvp20,bvp20);
 
 void contract(TubeVector& x, double t0, bool incremental)
 {
 
 
-    int n=2;
+   int n=2;
     double t=0;
     double tend=1;
 
-
     CtcVnodelp c;
     
-   
 
     if (x.volume() < DBL_MAX) {c.preserve_slicing(true);
       c.set_ignoreslicing(true);
@@ -51,8 +49,8 @@ void contract(TubeVector& x, double t0, bool incremental)
 }
 
 int main() {
-  //  TFunction f("x1", "x2" ,"(x2;-(0.001*exp(x1)))");
-    TFunction f("x1", "x2" ,"(x2;-(0.01*exp(x1)))");
+  TFunction f("x1", "x2" ,"(x2;-(0.001*exp(x1)))");
+  //  TFunction f("x1", "x2" ,"(x2;-(0.01*exp(x1)))");
     float temps;
     clock_t t1, t2;
     t1=clock();//sert à calculer le temps d'exécution
@@ -64,22 +62,23 @@ int main() {
     IntervalVector v(2);
     v[0]=Interval(0.,0.);
     //    v[1]=Interval(-1.e8,1.e8);
-    //    v[1]=Interval(-30.,30.);
-    v[1]=Interval(-100.,100.);
+     v[1]=Interval(-100.,100.);
     //v[1]=Interval(-30.,30.);
     x.set(v, 0.); // ini
     v[0]=Interval(0.,0.);
+    //v[1]=Interval(-30.,30.);
     v[1]=Interval(-100.,100.);
     x.set(v,1.);
     
     
-    
+    /*
     double eps0=0.1;
     double eps1=0.1;
-    /*
-     double eps0=0.2;
-    double eps1=0.2;
     */
+    
+    double eps0=0.2;
+    double eps1=0.2;
+    
     /* =========== SOLVER =========== */
     Vector epsilon(2);
     epsilon[0]=eps0;
@@ -88,11 +87,12 @@ int main() {
     tubex::Solver solver(epsilon);
 
     solver.set_refining_fxpt_ratio(2.0);
-    solver.set_propa_fxpt_ratio(0.98);
+    //    solver.set_propa_fxpt_ratio(0.9);
+    solver.set_propa_fxpt_ratio(0.);
     //solver.set_var3b_fxpt_ratio(0.999);
     solver.set_var3b_fxpt_ratio(-1);
 
-    solver.set_var3b_propa_fxpt_ratio(0.999);
+    solver.set_var3b_propa_fxpt_ratio(0.9);
     
 
    // solver.set_var3b_timept(0);

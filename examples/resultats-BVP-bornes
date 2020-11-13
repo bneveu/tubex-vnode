@@ -1,0 +1,133 @@
+
+
+
+
+b17  : [-20,20] level 11 0.24s
+       [-100,100] level 13 0.27s
+       [-1e8,1e8] level 33 0.63s
+       [-1e300,1.e300] 
+_____________________________________________
+
+
+b18  [-20,20] level 12 2.40s
+     [-40,40] level 15 7.17s
+     [-100,100] level 17 23.71s
+     [-100,100] refining 1 level 18 	44.7278  338bis.
+______________________________________________
+
+b23  [-20,20]  47.14
+     [-30,30]  22.41
+     [-35,35]  25.24  22.629 (avec ignoresilicing tjrs)
+     [-38,38]
+     [-40,40]  20000 slices -> tube reste infini
+               refining_ratio 1 et bissection_timept -1 : 37.02 (5 bis)
+	       refining_ratio 1 et bissection_timept 3 :  69.38 (6 bis)
+     [-42,42]  refining_ratio 1 et bissection_timept 3 refining_mode 0 : 66.36 (7 bis)
+               refining_ratio 1 et bissection_timept 3 refining_mode 2 : 47.93 (7 bis)
+     [-45,45]  volume reste infini ...
+--------------------------------------------------------------------------
+
+b25   VNode CIDG 3B 
+
+avec codomaine non borné : refining mode average
+      [-100,100]   85.50  20000 tranches  (solution vers 98.8 en 0)
+      [-100,100]   84.02  21161 tranches  (3B e-3 82.18 17256)
+      [-110,110]  154.33  29103 tranches 
+      [-120,120]  volume reste infini
+
+avec codomaine non borné : refining mode all
+      [-100,100]   248.07  100000 tranches
+
+avec codomaine non borné : refining mode median
+      [-100,100] 151.27  55457 tranches
+      [-120,120]  volume reste infini
+
+
+avec codomaine borné [-120,120]  refining mode average
+      [-100,100]    1201.19 99314 tranches
+      [-110,110]    91.11   14198 tranches
+      [-120,120]    103.27  28174 tranches
+
+avec codomaine borné [-120,120] refining mode all
+      [-100,100]  142.25   100000 tranches
+      [-100,100]  119.04    40000 tranches
+      [-120,120]  122.763   40000 tranches
+
+avec codomaine borné [-120,120] refining mode median
+     [-100,100] 40.46  19683 tranches
+     [-110,110] 322.38 99975 tranches
+     [-110,110] 251.894 40000 tranches 4 bis.
+ 
+----------------------------------------------------------------
+b26  [0 1]     5.6
+     [0 5]     13.0
+     [0 10]    13.99
+     [-1 5]   2000 tube reste infini
+     [0 100]   30.87
+     [-0.1 1]   6.7
+     [-0.2 1]   11  9 bis
+     [-0.3 1]   10.47  10 bis
+     [-0.4 1]   reste infini
+
+
+avec codomain borne [-100,100]  maxslices 2000
+     [-5,5]  9.5938  12 bis
+avec codomain borne [-1000,1000]  maxslices 2000
+     [-5,5]  14.437  12 bis
+     [-100,100] 34.97 48 bis		  
+
+avec codomain borne [-2000,2000]
+[-2000,2000]  43.90s. 66bis.
+
+avec codomain borne [-5000,5000]
+[-5000,5000]  175.58s. 257bis.
+
+
+___________________________________________________________________________
+b32  xi=100
+
+limite : pas de solution
+bornes -50,50  pour x2 et x3 en 0 et 1
+bounds[0]=Interval(0,1);
+bounds[1]=Interval(0,5);
+bounds[2]=Interval(-50,50);
+bounds[3]=Interval(-50,50);
+Solving time 3363.35
+Total time with clustering: 3363.35
+Number of bisections 132
+
+____________________________________________
+
+b32 xi=1
+bornes [0,10][0,10] [-1000,1000] [-1000,0]
+[0,1000][-1000,0]
+[-1000,0][-1000,0]
+ 53.00 2 bis.
+
+bornes [0,20][0,20] [-1000,1000] [-1000,0]
+[0,1000][-1000,0]
+[-1000,0][-1000,0]
+190.126 5 bis.
+__________________________________________________
+
+b35  ksi=1
+
+
+
+b40    tube infini
+
+[-100,100] 2.00s  64bis
+[-200,200] 2.43  75 bis
+[-500,500] 3.62  111  bis
+[-1000,1000] 4.48  157 bis
+[-2000,2000] 5.46 193 bis
+[-5000,5000] 6.66 238 bis
+[-10000,10000] 7.70 275 bis
+[-100000,100000] 10.58 394 bis
+[-1000000,1000000] 37.29 1498 bis    
+        propa 0.9  28.47 705  
+        propa 0.99 25.49 328  ************
+        propa 0.999 37.03 268
+	3B 0.9 0.9 0.9  180.42  160
+	3B 0. 0.9 0.9  181.82  157
+        3B 0.99 0.99 0.99 208.80 46

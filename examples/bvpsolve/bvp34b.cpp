@@ -12,13 +12,13 @@ using namespace tubex;
 using namespace vnodelp;
 template<typename var_type>
 
-void bvp18(int n, var_type*yp, const var_type*y, var_type t, void*param)
+void bvp19(int n, var_type*yp, const var_type*y, var_type t, void*param)
 {
-  interval ksi = 1;
+  interval ksi = 0.1;
     yp[0] = y[1];
     yp[1] = -ksi*exp(y[0]);
 }
-AD *ad=new FADBAD_AD(2,bvp18,bvp18);
+AD *ad=new FADBAD_AD(2,bvp19,bvp19);
 
 void contract(TubeVector& x, double t0, bool incremental)
 {
@@ -31,27 +31,21 @@ void contract(TubeVector& x, double t0, bool incremental)
 
     CtcVnodelp c;
     
-  
+   
 
     if (x.volume() < DBL_MAX) {c.preserve_slicing(true);
       c.set_ignoreslicing(true);
     }
     else {c.preserve_slicing(false);
-      //       c.set_ignoreslicing(false);
        c.set_ignoreslicing(true);
     }
-     /*
-    c.preserve_slicing(false);
-    c.set_ignoreslicing(false);
-
-     */
-    //    c.set_vnode_hmin(5.e-4);
+   
     c.set_vnode_hmin(1.e-3);
     c.Contract(ad,t,tend,n,x,t0,incremental);
 }
 
 int main() {
-  TFunction f("x1", "x2" ,"(x2;-(exp(x1)))");
+  TFunction f("x1", "x2" ,"(x2;-(0.1*exp(x1)))");
     float temps;
     clock_t t1, t2;
     t1=clock();//sert à calculer le temps d'exécution
@@ -64,17 +58,16 @@ int main() {
     v[0]=Interval(0.,0.);
     //    v[1]=Interval(-1.e8,1.e8);
     v[1]=Interval(-20.,20.);
-    //    v[1]=Interval(-100.,100.);
     x.set(v, 0.); // ini
     v[0]=Interval(0.,0.);
     v[1]=Interval(-20.,20.);
-    //    v[1]=Interval(-100.,100.);
     x.set(v,1.);
     
     
-    double eps0=0.01;
-    double eps1=0.01;
-       
+    
+    double eps0=0.1;
+    double eps1=0.1;
+    
 
     /* =========== SOLVER =========== */
     Vector epsilon(2);
@@ -83,24 +76,22 @@ int main() {
 
     tubex::Solver solver(epsilon);
 
-    //    solver.set_refining_fxpt_ratio(0.999);
-    solver.set_refining_fxpt_ratio(2);
-    //    solver.set_refining_fxpt_ratio(2.0);
-    solver.set_propa_fxpt_ratio(0.);
-    //    solver.set_var3b_fxpt_ratio(0.999);
+    solver.set_refining_fxpt_ratio(2.0);
+    //solver.set_propa_fxpt_ratio(0.);
+    solver.set_propa_fxpt_ratio(0.9);
     solver.set_var3b_fxpt_ratio(-1);
 
-    solver.set_var3b_propa_fxpt_ratio(0.);
+    solver.set_var3b_propa_fxpt_ratio(0.999);
     
 
     solver.set_var3b_timept(0);
     solver.set_trace(1);
     solver.set_max_slices(2000);
-    //    solver.set_max_slices(1);
-    solver.set_bisection_timept(3);
+
+    solver.set_bisection_timept(-1);
 
     solver.set_refining_mode(0);
-    solver.set_stopping_mode(1);
+    solver.set_stopping_mode(0);
     solver.set_contraction_mode(4);
     solver.set_var3b_external_contraction(true);
     std::ofstream Out("err.txt");

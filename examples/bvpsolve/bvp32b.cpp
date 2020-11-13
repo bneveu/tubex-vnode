@@ -16,7 +16,7 @@ template<typename var_type>
 
 void bvp32(int n, var_type*yp, const var_type*y, var_type t, void*param)
 {
-  interval ksi = 100;
+  interval ksi = 10;
   //    interval ksi = 4.6415888336128;
     yp[0] = y[1];
     yp[1] = y[2];
@@ -56,7 +56,7 @@ void contract(TubeVector& x, double t0, bool incremental)
 }
 
 int main() {
-    TFunction f("x1", "x2" ,"x3", "x4", "(x2;x3;x4;100*(x2*x3-x1*x4))");
+    TFunction f("x1", "x2" ,"x3", "x4", "(x2;x3;x4;10*(x2*x3-x1*x4))");
   //  TFunction f("x1", "x2" ,"x3", "x4", "(x2;x3;x4;4.6415888336128*(x2*x3-x1*x4))");
 
    
@@ -109,7 +109,7 @@ int main() {
     solver.set_propa_fxpt_ratio(0.);
     //    solver.set_propa_fxpt_ratio(0.9);
     //solver.set_var3b_fxpt_ratio(-1);
-    solver.set_var3b_fxpt_ratio(0.99999);
+    solver.set_var3b_fxpt_ratio(0.9);
 
     solver.set_var3b_propa_fxpt_ratio(0.99999);
     
@@ -119,7 +119,7 @@ int main() {
     solver.set_max_slices(2000);
     
     //solver.set_bisection_timept(3);
-    solver.set_bisection_timept(-1);
+    solver.set_bisection_timept(3);
 
     solver.set_refining_mode(0);
     solver.set_stopping_mode(2);
@@ -127,9 +127,9 @@ int main() {
     solver.set_var3b_external_contraction(true);
     std::ofstream Out("err.txt");
     std::streambuf* OldBuf = std::cerr.rdbuf(Out.rdbuf());
-    list<TubeVector> l_solutions = solver.solve(x, f, &contract);
+    //list<TubeVector> l_solutions = solver.solve(x, f, &contract);
     //    list<TubeVector> l_solutions = solver.solve(x, &contract);
-    //    list<TubeVector> l_solutions = solver.solve(x, f);
+    list<TubeVector> l_solutions = solver.solve(x, f);
     std::cerr.rdbuf(OldBuf);
     
     cout << "nb sol " << l_solutions.size() << endl;

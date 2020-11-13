@@ -33,9 +33,10 @@ void contract(TubeVector& x, double t0, bool incremental)
 
     CtcVnodelp c;
    
-    if (x.volume() < DBL_MAX) {c.preserve_slicing(true);
+    if (x.volume() < DBL_MAX && x.nb_slices() >=2)
+      {c.preserve_slicing(true);
       c.set_ignoreslicing(true);
-    }
+      }
     else {c.preserve_slicing(false);
       //       c.set_ignoreslicing(false);
        c.set_ignoreslicing(true);
@@ -55,6 +56,8 @@ int main()
     Interval domain(0.,1.);
     //    TubeVector x(domain, 0.01,2);
     TubeVector x(domain,2);
+    //    TubeVector x(domain,0.01,IntervalVector(2,Interval(-120,120)));
+    //    TubeVector x(domain,IntervalVector(2,Interval(-120,120)));
     IntervalVector v(2);
     v[0]=Interval(0.,0.);
     v[1]=Interval(-100,100);
@@ -77,12 +80,12 @@ int main()
 
     solver.set_refining_fxpt_ratio(2);
 
-    solver.set_propa_fxpt_ratio(0.98);
+    solver.set_propa_fxpt_ratio(0.);
 
     //solver.set_var3b_fxpt_ratio(-1);
-    solver.set_var3b_fxpt_ratio(0.98);
-    solver.set_var3b_propa_fxpt_ratio(0.98);
-    solver.set_var3b_timept(0);
+    solver.set_var3b_fxpt_ratio(0.9);
+    solver.set_var3b_propa_fxpt_ratio(0.9);
+    solver.set_var3b_timept(3);
     solver.set_trace(1);
     solver.set_max_slices(100000);
     //    solver.set_max_slices(1);
@@ -90,13 +93,13 @@ int main()
     solver.set_bisection_timept(3);
     solver.set_contraction_mode(2);
     solver.set_var3b_external_contraction(true);
-    solver.set_stopping_mode(0);;
+    solver.set_stopping_mode(2);;
     std::ofstream Out("err.txt");
     std::streambuf* OldBuf = std::cerr.rdbuf(Out.rdbuf());
 
     list<TubeVector> l_solutions = solver.solve(x,f, &contract);
     //list<TubeVector> l_solutions = solver.solve(x, &contract);
-    //    list<TubeVector> l_solutions = solver.solve(x,f);
+    //list<TubeVector> l_solutions = solver.solve(x,f);
     std::cerr.rdbuf(OldBuf);
     cout << l_solutions.front() << endl;
     cout << "nb sol " << l_solutions.size() << endl;

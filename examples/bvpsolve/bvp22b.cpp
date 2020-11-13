@@ -86,7 +86,7 @@ int main()
 
     //solver.set_var3b_fxpt_ratio(-1);
     solver.set_var3b_fxpt_ratio(0.9);
-    solver.set_var3b_propa_fxpt_ratio(0.9);
+    solver.set_var3b_propa_fxpt_ratio(0.);
     solver.set_var3b_timept(0);
     solver.set_trace(1);
     solver.set_max_slices(100000);
@@ -95,7 +95,7 @@ int main()
     solver.set_bisection_timept(3);
     solver.set_contraction_mode(2);
     solver.set_var3b_external_contraction(true);
-    solver.set_stopping_mode(2);
+    solver.set_stopping_mode(0);
     std::ofstream Out("err.txt");
     std::streambuf* OldBuf = std::cerr.rdbuf(Out.rdbuf());
     list<TubeVector> l_solutions = solver.solve(x,f, &contract);
