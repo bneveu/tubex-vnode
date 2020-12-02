@@ -85,9 +85,9 @@ int main()
     solver.set_var3b_propa_fxpt_ratio(0.9);
     solver.set_var3b_timept(3);
     solver.set_trace(1);
-    solver.set_max_slices(100000);
-    //    solver.set_max_slices(1);
-    solver.set_refining_mode(2);
+    solver.set_max_slices(40000);
+
+    solver.set_refining_mode(3);
     solver.set_bisection_timept(3);
     solver.set_contraction_mode(2);
     solver.set_var3b_external_contraction(true);

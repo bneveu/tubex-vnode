@@ -89,9 +89,8 @@ int main() {
     solver.set_refining_fxpt_ratio(2.0);
     solver.set_propa_fxpt_ratio(0.);
     // solver.set_propa_fxpt_ratio(0.99);
-    // solver.set_var3b_fxpt_ratio(-1);
-    solver.set_var3b_fxpt_ratio(0.9);
-
+     solver.set_var3b_fxpt_ratio(-1);
+    //    solver.set_var3b_fxpt_ratio(0.9);
     solver.set_var3b_propa_fxpt_ratio(0.9);
     
 
@@ -99,12 +98,12 @@ int main() {
     solver.set_trace(1);
     solver.set_max_slices(5000);
     
+    //    solver.set_bisection_timept(3);
     solver.set_bisection_timept(3);
-    //solver.set_bisection_timept(-1);
 
-    solver.set_refining_mode(0);
+    solver.set_refining_mode(3);
     solver.set_stopping_mode(0);
-    solver.set_contraction_mode(2);
+    solver.set_contraction_mode(4);
     solver.set_var3b_external_contraction(true);
     cout << x << endl;
     std::ofstream Out("err.txt");
@@ -122,9 +121,7 @@ int main() {
   cout << l_solutions.back()<<" ti-> " <<l_solutions.back()(domain.lb()) << " tf -> "<< l_solutions.back()(domain.ub()) <<" max gate diam : (" <<l_solutions.back()[0].max_gate_diam(t_max_diam)<<", "<<l_solutions.back()[1].max_gate_diam(t_max_diam)<< " volume :  "<< l_solutions.back().volume()<<" ti (diam) -> " <<l_solutions.back()(domain.lb()).diam() << " tf (diam) -> "<< l_solutions.back()(domain.ub()).diam() << endl;
 
 
-
     }
-
     
     return 0;
 }

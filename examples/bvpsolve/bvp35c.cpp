@@ -36,8 +36,8 @@ void contract(TubeVector& x, double t0, bool incremental)
     CtcVnodelp c;
     
     
-    // if (x.volume() < DBL_MAX) {
-    if (x.volume() < DBL_MAX && x.nb_slices()>=2  ) {   // bug when ksi = 1 and vnode order 11
+
+    if (x.volume() < DBL_MAX && x.nb_slices()>=2  ) {   
       c.preserve_slicing(true);
       c.set_ignoreslicing(true);
     }

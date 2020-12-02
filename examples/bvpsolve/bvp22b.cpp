@@ -12,7 +12,7 @@ using namespace tubex;
 using namespace vnodelp;
 template<typename var_type>
 
-void bvp24(int n, var_type*yp, const var_type*y, var_type t, void*param)
+void bvp22b(int n, var_type*yp, const var_type*y, var_type t, void*param)
 {
 
     interval ksi=20;
@@ -20,7 +20,7 @@ void bvp24(int n, var_type*yp, const var_type*y, var_type t, void*param)
     yp[0] = y[1];
     yp[1] = -(ksi*(y[1]+sqr(y[0])));
 }
-AD *ad=new FADBAD_AD(2,bvp24,bvp24);
+AD *ad=new FADBAD_AD(2,bvp22b,bvp22b);
 
 void contract(TubeVector& x, double t0, bool incremental)
 {

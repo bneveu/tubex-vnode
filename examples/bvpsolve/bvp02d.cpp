@@ -51,6 +51,7 @@ void contract(TubeVector& x, double t0, bool incremental)
 
 
     c.set_vnode_hmin(1.e-3);
+    
     c.Contract(ad,t,tend,n,x,t0,incremental);
 }
 
@@ -94,7 +95,7 @@ int main()
     solver.set_trace(1);
     solver.set_max_slices(20000);
 
-    solver.set_refining_mode(2);
+    solver.set_refining_mode(3);
     solver.set_bisection_timept(3);
     solver.set_contraction_mode(2);
     solver.set_stopping_mode(0);

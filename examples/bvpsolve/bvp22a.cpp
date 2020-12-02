@@ -23,17 +23,13 @@ void bvp22a(int n, var_type*yp, const var_type*y, var_type t, void*param)
 AD *ad=new FADBAD_AD(2,bvp22a,bvp22a);
 void contract(TubeVector& x, double t0, bool incremental)
 {
-
-
     // Differential equation
 
     int n=2;
     double t=0;
     double tend=1;
 
-
     CtcVnodelp c;
-        
     
     if (x.volume() < DBL_MAX) {
       c.set_ignoreslicing(true);
@@ -44,10 +40,11 @@ void contract(TubeVector& x, double t0, bool incremental)
     }
     
     c.set_vnode_hmin(1.e-3);
-    
+    c.set_vnode_order(11);
+    //    cout << " volume before vnode " << x << "  " << x.volume() << " t0 " << t0 << " incremental " << incremental << endl;
     c.Contract(ad,t,tend,n,x,t0,incremental);
-
-
+    //     c.Contract(ad,t,tend,n,x,t0,false);
+    //    cout << " volume after vnode " << x << "   " << x.volume() <<  " t0 " << t0 << " incremental " << incremental << endl;
     
 }
 
@@ -59,13 +56,17 @@ int main()
 
     Interval domain(0.,1.);
     TubeVector x(domain,2);
+    //    TubeVector x(domain,IntervalVector(2, Interval(-1.e50,1.e50)));  //OK
+    //    TubeVector x(domain,IntervalVector(2, Interval(-1.e100,1.e100)));  // bug Vnode
     //TubeVector x(domain,0.01,2);
     IntervalVector v(2);
     v[0]=Interval(0.,0.);
+    //    v[1]=Interval(-40,40);
     v[1]=Interval(-20,20);
     x.set(v, 0.); // ini
 
     v[0]=Interval(0.5,0.5);
+    //    v[1]=Interval(-40,40);
     v[1]=Interval(-20,20);
     x.set(v,1.);
 
@@ -89,11 +90,11 @@ int main()
 
     solver.set_var3b_external_contraction (true);
 
-    solver.set_var3b_propa_fxpt_ratio(0.9);
+    solver.set_var3b_propa_fxpt_ratio(0.);
     solver.set_var3b_timept(0);
     solver.set_trace(1);
 
-    solver.set_max_slices(20000);
+    solver.set_max_slices(40000);
     solver.set_refining_mode(2);
 
     solver.set_bisection_timept(3);

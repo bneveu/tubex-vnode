@@ -12,29 +12,33 @@ stratégie de bissection : t0  ou (t0 ou tf)
 
 Les problèmes proviennent de la base d'exemples BVPsolve avec leurs différentes variantes (paramètre ksi)
 _________________________________________________________________________________________________
+variantes du problème 1
+bvp01a  ksi=1     0.01  Vnode1+CtcDeriv+3B     0    0.9   0.9     0.06  0
+bvp01b  ksi=0.1   0.01  Vnode1+CtcDeriv+3B-md  0    0.9   0.9     0.73  0
+bvp01c  ksi=0.01  0.1   Vnode1+CtcDeriv+3B     0    0.99  0.99   10.35  0
+bvp01d  ksi=0.001 0.1   Vnode1+CtcDeriv+3B-md  0.99 0.999 0.999  303.6  0
+
 
 variantes du problème 2 (ex BVP17)
-bvp02a       ksi=0.2       0.02    Vnode1+CtcDerivd1+3B-md 0. 0.9 0.9     0.16   0
-bvp02b       ksi=0.1       0.05    Vnode1+CtcDerivd1+3B-md 0. 0.9 0.9     0.24   0
-bvp02c       ksi=0.01      0.2     Vnode1+CtcDerivd1+3B-av 0. 0.9  0.9    1.47   0
-bvp02d       ksi=0.001       1     Vnode1+CIDG+3Bd1-av     0. 0.99 0.99  92.91   0   
-
-
+bvp02a       ksi=0.2       0.02    Vnode1+CtcDeriv+3B-md 0. 0.9 0.9     0.14   0
+bvp02b       ksi=0.1       0.05    Vnode1+CtcDeriv+3B-md 0. 0.9 0.9     0.23   0
+bvp02c       ksi=0.01      0.2     Vnode1+CtcDeriv+3B-av 0. 0.9  0.9    1.42   0
+bvp02d       ksi=0.001       1     Vnode1+CIDG+3B-av     0. 0.99 0.99  90.01   0   
 
 
 variantes du problème 22
-bvp22a      ksi=0.1       0.05    Vnode1+CIDG+3Bd1-av  0.  0.9  0.    3.39    0
-bvp22b      ksi=0.05      0.05    Vnode1+CIDG+3Bd1-av  0.  0.9  0.    2.98    0
-bvp22c      ksi=0.01      0.2     Vnode1+CIDG+3Bd1-av  0.  0.9  0.9   44.85   0
+bvp22a      ksi=0.1       0.05    Vnode1+CIDG+3B-av  0.  0.9  0.    3.32    0
+bvp22b      ksi=0.05      0.05    Vnode1+CIDG+3B-av  0.  0.9  0.    2.90    0
+bvp22c      ksi=0.01      0.2     Vnode1+CIDG+3B-av  0.  0.9  0.9   44.08   0
 
 variantes du problème 25  
-bvp25a       t0    ksi=0.1       0.1   Vnode1+CIDG+3Bd1     0.  0.9  0.9   6.65   3
-bvp25b       t0    ksi=0.01      0.1   Vnode1+CIDG          0.             22.8  31
+bvp25a       t0    ksi=0.1       0.1   Vnode1+CIDG+3B     0.  0.9  0.9   6.57   3
+bvp25b       t0    ksi=0.01      0.1   Vnode1+CIDG        0.             22.8  31
 bvp25c             ksi=0.001           resolu sur portes initiales et finales seulement.
 
 variantes du problème 32  (dimension 4)
-bvp32a     ksi=1         0.1     CtcDerivd1+3Bd1      0 0.99 0.99    30.0    2
-bvp32b     ksi=0.01      0.1     pas résolu                                             
+bvp32a     ksi=1         0.1     CtcDeriv+3Bd-av   0.99 0.99 0.99    26.3    3
+bvp32b     ksi=0.1       0.1     pas résolu                                             
 bvp32c     ksi=0.01      0.1     pas résolu                                             
 bvp32d     ksi=0.002     0.1     pas résolu
 bvp32e     ksi=0.001     0.1     pas résolu
@@ -42,15 +46,15 @@ bvp32e     ksi=0.001     0.1     pas résolu
 
 variantes du problème 34 à deux solutions (ex BVP18)
 
-bvp34a t0      ksi=1         0.05    Vnode1+CtcDerivd1    0.           0.47   33
-bvp34b t0      ksi=0.1       0.1     Vnode1+CtcDerivd1    0.           0.53   39
-bvp34c t0      ksi=0.01      0.1     Vnode1+CtcDerivd1    0.           3.58  112   
-bvp34d t0      ksi=0.001     0.2     Vnode1+CtcDerivd1    0.           3.89  133
+bvp34a t0      ksi=1         0.05    Vnode1+CtcDeriv    0.           0.47   33
+bvp34b t0      ksi=0.1       0.1     Vnode1+CtcDeriv    0.           0.53   39
+bvp34c t0      ksi=0.01      0.1     Vnode1+CtcDeriv    0.           3.51  112   
+bvp34d t0      ksi=0.001     0.2     Vnode1+CtcDeriv    0.           3.83  133
 
 variantes du problème 35 (dimension 2+1 : non autonome)
-bvp35a     ksi=1         0.01    Vnode1+CtcDerivd1   0.9       0.05   0
-bvp35b     ksi=0.1       0.1     Vnode1+CtcDerivd1   0         0.64   0
+bvp35a     ksi=1         0.01    Vnode1+CtcDeriv   0.9       0.05   0
+bvp35b     ksi=0.1       0.1     Vnode1+CtcDeriv   0         0.63   0
 bvp35c     ksi=0.01      0.1     pas résolu
 
 problème à 2 solutions de wikipedia shooting method
-bvp40  à 2 solutions     0.05     Vnode1+CtcDerivd1            1.61  64        
+bvp40  à 2 solutions     0.05     Vnode1+CtcDeriv   0        1.58  64        

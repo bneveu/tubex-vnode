@@ -1,5 +1,5 @@
-//created by bedouhene 09/12/2019
-// BvpSolve 2 (4 variants : ksi=0.2, ksi=0.1, ksi=0.01, ksi=0.001
+//created by bneveu
+// BvpSolve  (4 variants : ksi=, ksi=0.1, ksi=0.01, ksi=0.001
 
 #include <iostream>
 #include <vector>
@@ -13,14 +13,14 @@ using namespace tubex;
 using namespace vnodelp;
 template<typename var_type>
 
-void bvp02a(int n, var_type*yp, const var_type*y, var_type t, void*param)
+void bvp01(int n, var_type*yp, const var_type*y, var_type t, void*param)
 {
-    interval ksi=0.2;
+    interval ksi=0.001;
     yp[0] = y[1];
-    yp[1] = y[1]/ksi;
+    yp[1] = y[0]/ksi;
 }
 
-AD *ad=new FADBAD_AD(2,bvp02a,bvp02a);
+AD *ad=new FADBAD_AD(2,bvp01,bvp01);
 
 void contract(TubeVector& x, double t0, bool incremental)
 {
@@ -48,16 +48,17 @@ void contract(TubeVector& x, double t0, bool incremental)
        c.set_ignoreslicing(true);
     }
 
-
+   
     c.set_vnode_hmin(1.e-3);
     c.Contract(ad,t,tend,n,x,t0,incremental);
+   
 }
 
 int main()
 
 {    
 
-  TFunction f("x1", "x2" ,"(x2;x2/0.2)");
+  TFunction f("x1", "x2" ,"(x2;1000*x1)");
 
   Interval domain(0.,1);
 
@@ -66,20 +67,17 @@ int main()
     IntervalVector v(2);
     v[0]=Interval(1.,1.);
 
-    v[1]=Interval(-10.,10.);
-    //    v[1]=Interval(-1.e300,1.e300);
+    v[1]=Interval(-100.,100.);
 
     x.set(v, 0.); // ini
-    v[0]=Interval(0.,0.);
+    v[0]=Interval(0.);
 
-    v[1]=Interval(-10,10.);
-    //v[1]=Interval(-1.e300,1.e300);
-
+    v[1]=Interval(-100,100.);
 
     x.set(v,1.);
     
-    double eps0=0.02;
-    double eps1=0.02;
+    double eps0=0.1;
+    double eps1=0.1;
     
     /* =========== SOLVER =========== */
     Vector epsilon(2);
@@ -90,17 +88,17 @@ int main()
     tubex::Solver solver(epsilon);
 
     solver.set_refining_fxpt_ratio(2.);
-    solver.set_propa_fxpt_ratio(0.);
+    solver.set_propa_fxpt_ratio(0.99);
     //solver.set_var3b_fxpt_ratio(-1);
-    solver.set_var3b_fxpt_ratio(0.9);
-    solver.set_var3b_propa_fxpt_ratio(0.9);
+    solver.set_var3b_fxpt_ratio(0.999);
+    solver.set_var3b_propa_fxpt_ratio(0.999);
     solver.set_var3b_timept(0);
     solver.set_trace(1);
-    solver.set_max_slices(2000);
+    solver.set_max_slices(20000);
 
-    solver.set_refining_mode(2);
+    solver.set_refining_mode(3);
     solver.set_bisection_timept(3);
-    solver.set_contraction_mode(4);
+    solver.set_contraction_mode(2);
     solver.set_stopping_mode(0);
     solver.set_var3b_external_contraction(true);
     cout.precision(6);

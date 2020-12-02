@@ -1,30 +1,85 @@
+bvp01a    [-100,100]  256 0.06s
+          [-1000,1000]  256 0.06s   
+          [-1e8,1e8]  256 0.07s   
+	  [-1e100,1.e100] 256 0.29s
+          [-1e300,1.e300] 256 0.77s	  
 
 
+bvp01d [-100,100]  tube borné par 1er appel vnode
 
 
-b17  : [-20,20] level 11 0.24s
-       [-100,100] level 13 0.27s
-       [-1e8,1e8] level 33 0.63s
-       [-1e300,1.e300] 
-_____________________________________________
+______________________________________________________________
+
+bvp02a  CtcVnode+CtcDeriv : 0  3B: 0.9 0.9 
+          [-10,10] 756 slices  0.14s
+          [-20,20] 756 slices  0.17s
+          [-100,100]  756 slices 0.20s
+          [-1e8,1e8] 756 slice 0.22ss
+          [-1e100,1.e100] 756 slices 1.23s
+          [-1e300,1.e300] 756 slices 3.35s    
 
 
-b18  [-20,20] level 12 2.40s
-     [-40,40] level 15 7.17s
-     [-100,100] level 17 23.71s
-     [-100,100] refining 1 level 18 	44.7278  338bis.
+bvp02c    [-200,200][-200,0]   3444 slices 1.43s
+          [-200,200][-200,200] 2889 slices 9.45s	
+          [-1000,1000][-1000,1000] 1870 slices 12.07s
+          [-1e8,1e8] [-1e8,1e8] 1872 slices  14.37s
+
+
+bvp02d   codomain [-2000,2000]
+     [-2000,2000][-2000,0] : 90s
+[-2000,2000][-2000,10] 92.6s
+          [-2000,2000][-2000,100]  trop de bissections à 20000	
+
+__________________________________________
+
+
+bvp34a  [-20,20] 0.47s  33 bis.
+        [-40,40] level 15 7.17s
+        [-100,100] level 17 23.71s
+        [-100,100] refining 1 level 18 	44.7278  338bis.
 ______________________________________________
 
-b23  [-20,20]  47.14
-     [-30,30]  22.41
-     [-35,35]  25.24  22.629 (avec ignoresilicing tjrs)
-     [-38,38]
-     [-40,40]  20000 slices -> tube reste infini
+bvp22a  essais ancienne version
+        [-20,20]  47.14
+        [-30,30]  22.41
+        [-35,35]  25.24  22.629 (avec ignoresilicing tjrs)
+        [-40,40]  20000 slices -> tube reste infini
                refining_ratio 1 et bissection_timept -1 : 37.02 (5 bis)
 	       refining_ratio 1 et bissection_timept 3 :  69.38 (6 bis)
-     [-42,42]  refining_ratio 1 et bissection_timept 3 refining_mode 0 : 66.36 (7 bis)
+        [-42,42]  refining_ratio 1 et bissection_timept 3 refining_mode 0 : 66.36 (7 bis)
                refining_ratio 1 et bissection_timept 3 refining_mode 2 : 47.93 (7 bis)
-     [-45,45]  volume reste infini ...
+        [-45,45]  volume reste infini ...
+
+
+bvp22a . essais 18/11/2020
+avec codomaine non borné
+       [-20,20]  3.39
+       [-30,30]  3.51
+       [-35,35]  4.64
+       [-40,40]  20000 slices	-> tube reste infini	
+
+avec codomaine borné [-100,100]
+       [-20,20]  2.11
+       [-30,30]  2.85
+       [-35,35] 2.79
+       [-40,40] 2.37  1095 slices  (avec 3B)   pas résolu sans 3B
+
+avec codomaine borné [-1000,1000]
+[-40,40] 4.87 2293 slices 
+avec codomaine borné [-10000,10000]
+[-40,40] 16.3883 6351 slices
+avec codomaine borné [-100000,100000]
+[-40,40] 20.2273 7355 slices
+avec codomaine borné [-1.e8,1.e8]
+[-40,40] 7.11723 3499 slices
+avec codomaine borné [-1.e20,1.e20]
+[-40,40] 2.71178 1410 slices
+
+Conclusion : 
+le tube ne peut être borné sans bissection avec des intervalles initiaux et finaux [-40,40]
+la 3B ne peut agir qu'avec un tube borné. 
+problème résolu avec codomaine borné à [-1.e50,1.e50],  -> bug vnode overflow filib avec codomaine borné [-1.e100,1.e100]
+
 --------------------------------------------------------------------------
 
 b25   VNode CIDG 3B 

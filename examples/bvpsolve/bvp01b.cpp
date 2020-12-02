@@ -1,5 +1,5 @@
-//created by bedouhene 09/12/2019
-// BvpSolve 2 (4 variants : ksi=0.2, ksi=0.1, ksi=0.01, ksi=0.001
+//created by bneveu
+// BvpSolve  (4 variants : ksi=, ksi=0.1, ksi=0.01, ksi=0.001
 
 #include <iostream>
 #include <vector>
@@ -13,14 +13,14 @@ using namespace tubex;
 using namespace vnodelp;
 template<typename var_type>
 
-void bvp02a(int n, var_type*yp, const var_type*y, var_type t, void*param)
+void bvp01(int n, var_type*yp, const var_type*y, var_type t, void*param)
 {
-    interval ksi=0.2;
+    interval ksi=0.1;
     yp[0] = y[1];
-    yp[1] = y[1]/ksi;
+    yp[1] = y[0]/ksi;
 }
 
-AD *ad=new FADBAD_AD(2,bvp02a,bvp02a);
+AD *ad=new FADBAD_AD(2,bvp01,bvp01);
 
 void contract(TubeVector& x, double t0, bool incremental)
 {
@@ -57,7 +57,7 @@ int main()
 
 {    
 
-  TFunction f("x1", "x2" ,"(x2;x2/0.2)");
+  TFunction f("x1", "x2" ,"(x2;10*x1)");
 
   Interval domain(0.,1);
 
@@ -66,20 +66,19 @@ int main()
     IntervalVector v(2);
     v[0]=Interval(1.,1.);
 
-    v[1]=Interval(-10.,10.);
-    //    v[1]=Interval(-1.e300,1.e300);
+    v[1]=Interval(-100.,100.);
+
 
     x.set(v, 0.); // ini
-    v[0]=Interval(0.,0.);
+    v[0]=Interval(0.);
 
-    v[1]=Interval(-10,10.);
-    //v[1]=Interval(-1.e300,1.e300);
+    v[1]=Interval(-100,100.);
 
 
     x.set(v,1.);
     
-    double eps0=0.02;
-    double eps1=0.02;
+    double eps0=0.01;
+    double eps1=0.01;
     
     /* =========== SOLVER =========== */
     Vector epsilon(2);

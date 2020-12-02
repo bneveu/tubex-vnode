@@ -35,10 +35,8 @@ void contract(TubeVector& x, double t0, bool incremental)
     double t=-1;
     double tend=1;
     CtcVnodelp c;
-    
-    
-    // if (x.volume() < DBL_MAX) {
-    if (x.volume() < DBL_MAX && x.nb_slices()>=2  ) {   // bug when ksi = 1 and vnode order 11
+   
+    if (x.volume() < DBL_MAX && x.nb_slices()>=2  ) {   
       c.preserve_slicing(true);
       c.set_ignoreslicing(true);
     }
@@ -46,13 +44,12 @@ void contract(TubeVector& x, double t0, bool incremental)
       c.preserve_slicing(false);
       c.set_ignoreslicing(true);
     }
-    
-  
+     
     c.set_vnode_hmin(1.e-3);
     c.set_vnode_order(11);
-
+    cout << " before vnode " << t0 << " " << incremental << endl;
     c.Contract(ad,t,tend,n,x,t0,incremental);
-
+    cout << " after vnode " <<   x.nb_slices() << endl;
 }
 
 int main() {
@@ -63,10 +60,8 @@ int main() {
 
     Interval domain(-1.,1.);
    
-
     TubeVector x (domain, 3);
-    
-
+   
     IntervalVector v(3);
     v[0]=Interval(-1.,-1.);
     v[1]=Interval(1);
@@ -79,8 +74,7 @@ int main() {
     
     x.set(v,1.);
     
-    
-    
+        
     double eps0=0.1; 
     double eps1=0.1;
     double eps2=0.1;
@@ -109,7 +103,7 @@ int main() {
     //    solver.set_max_slices(1);
     solver.set_bisection_timept(3);
 
-    solver.set_refining_mode(0);
+    solver.set_refining_mode(2);
     solver.set_stopping_mode(0);
     solver.set_contraction_mode(4);
     solver.set_var3b_external_contraction(true);

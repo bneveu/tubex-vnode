@@ -125,6 +125,11 @@ add_executable(bID examples/BVP_ID.cpp )
 #add_executable(b35 examples/BVP_35.cpp )
 #add_executable(b40 examples/BVP_40.cpp )
 
+add_executable(bvp01a examples/bvpsolve/bvp01a.cpp)
+add_executable(bvp01b examples/bvpsolve/bvp01b.cpp)
+add_executable(bvp01c examples/bvpsolve/bvp01c.cpp)
+add_executable(bvp01d examples/bvpsolve/bvp01d.cpp)
+
 add_executable(bvp02a examples/bvpsolve/bvp02a.cpp)
 add_executable(bvp02b examples/bvpsolve/bvp02b.cpp)
 add_executable(bvp02c examples/bvpsolve/bvp02c.cpp)
@@ -173,6 +178,11 @@ target_link_libraries(bID  ${VNODE_LIBS} CtcVnodelp)
 #target_link_libraries(b32  ${VNODE_LIBS} CtcVnodelp)
 #target_link_libraries(b35  ${VNODE_LIBS} CtcVnodelp)
 #target_link_libraries(b40  ${VNODE_LIBS} CtcVnodelp)
+
+target_link_libraries(bvp01a ${VNODE_LIBS} CtcVnodelp)
+target_link_libraries(bvp01b ${VNODE_LIBS} CtcVnodelp)
+target_link_libraries(bvp01c ${VNODE_LIBS} CtcVnodelp)
+target_link_libraries(bvp01d ${VNODE_LIBS} CtcVnodelp)
 
 target_link_libraries(bvp02a ${VNODE_LIBS} CtcVnodelp)
 target_link_libraries(bvp02b ${VNODE_LIBS} CtcVnodelp)
