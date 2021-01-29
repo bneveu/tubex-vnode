@@ -83,12 +83,12 @@ int main() {
 
     solver.set_var3b_timept(0);
     solver.set_trace(1);
-    solver.set_max_slices(20000);
+    solver.set_max_slices(5000);
    
    
     solver.set_bisection_timept(-1);
 
-    solver.set_refining_mode(2);
+    solver.set_refining_mode(0);
     solver.set_stopping_mode(0);
     solver.set_contraction_mode(4);
     solver.set_var3b_external_contraction(true);

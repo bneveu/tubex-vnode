@@ -1,5 +1,5 @@
-#cmake_minimum_required(VERSION 3.0)
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.0)
+
 project(tubex-vnode)
 
 
@@ -8,11 +8,12 @@ project(tubex-vnode)
 # Looking for Ibex, Tubex
 ################################################################################
 
-  set(IBEX_ROOT "/certis/3/neveub/RECHERCHE/ibex/ibex2-8/ibex-lib/") # Install path of ibex lib
-  set(TUBEX_ROOT "/certis/3/neveub/RECHERCHE/tubex/tubex2/tubex-lib/")
-  set(TUBEX_SOLVER_ROOT "/certis/3/neveub/RECHERCHE/tubex/tubex-solve/tubex-solve/")
+  set(IBEX_ROOT "/home/neveub/tubex/ibex-lib/install") # Install path of ibex lib
+  set(TUBEX_ROOT "/home/neveub/tubex/tubex-lib/")
+  set(TUBEX_SOLVER_ROOT "/home/neveub/tubex/tubex-solve/")
  
-  set(FILIB_LIB "/certis/3/neveub/RECHERCHE/ibex/ibex2-8/ibex-lib/__build__/3rd/filibsrc-3.0.2.2/libprim/.libs/")
+  set(IBEX_LIB_DIR "${IBEX_ROOT}/lib"
+                   "${IBEX_ROOT}/lib/ibex/3rd")
   
   set(IBEX_INCLUDE_DIR  "${IBEX_ROOT}/include"
 		        "${IBEX_ROOT}/include/ibex"
@@ -20,36 +21,34 @@ project(tubex-vnode)
 			"${IBEX_ROOT}/include/lib" 
 			"${IBEX_ROOT}/include/lib/ibex/3rd")
 
-  set(TUBEX_INCLUDE_DIR "${TUBEX_ROOT}/make/include"
-			"${TUBEX_ROOT}/make/src/core"
+  set(TUBEX_INCLUDE_DIR "${TUBEX_ROOT}/build/include"
+			"${TUBEX_ROOT}/build/src/core"
 			"${TUBEX_ROOT}/include/tubex"
-			"${TUBEX_ROOT}/include/tubex-rob"
 			"${TUBEX_ROOT}/include/lib")
-  set(TUBEX_SOLVER_INCLUDE_DIR "${TUBEX_SOLVER_ROOT}/include/tubex-solve" 
-    "${TUBEX_SOLVER_ROOT}/make/src" "${TUBEX_SOLVER_ROOT}/src")
+  set(TUBEX_SOLVER_INCLUDE_DIR "${TUBEX_SOLVER_ROOT}/src" 
+    "${TUBEX_SOLVER_ROOT}/build/src")
 
-  set(TUBEX_LIB_DIR "${TUBEX_ROOT}/lib")
-  set(TUBEX_SOLVER_LIB_DIR "${TUBEX_SOLVER_ROOT}/lib")
+  set(TUBEX_LIB_DIR "${TUBEX_ROOT}/build/src/core")
+    #"${TUBEX_ROOT}/build/src/robotics")
+  set(TUBEX_SOLVER_LIB_DIR "${TUBEX_SOLVER_ROOT}/build/src")
+
+    
 
 
   include_directories(${IBEX_INCLUDE_DIR})
   include_directories(${TUBEX_INCLUDE_DIR})
   include_directories(${TUBEX_SOLVER_INCLUDE_DIR})
-	
-  link_directories("/certis/3/neveub/RECHERCHE/lapack/lapack-3.9.0/build/lib"
-    "/certis/3/neveub/RECHERCHE/lapack/lapack-3.9.0/build/lib"
-                    "${IBEX_ROOT}/lib" 
-               	   "${IBEX_ROOT}/lib/ibex/3rd" 
-                   "${TUBEX_ROOT}/make/src/core"
-                   "${TUBEX_ROOT}/make/src/robotics"
-                   "${TUBEX_SOLVER_ROOT}/make/src"
-                   "${FILIB_LIB}")
-# set(TUBEX_LDFLAGS "tubex" "ibex" "gaol" "gdtoa" "ultim" "prim")
-set(TUBEX_LDFLAGS "tubex-solver" "tubex" "ibex" "prim" "gfortran")
+
+  link_directories(${IBEX_LIB_DIR})
+  link_directories(${TUBEX_LIB_DIR})
+  link_directories(${TUBEX_SOLVER_LIB_DIR})
+  
+  # set(TUBEX_LDFLAGS "tubex" "ibex" "gaol" "gdtoa" "ultim" "prim")
+  set(TUBEX_LDFLAGS "tubex-solver" "tubex" "ibex" "prim" )
 
 ###########################################################"
 # VNODE VARIABLES
-set(VNODE_BUILD_DIR "/certis/3/neveub/RECHERCHE/vnode/")
+set(VNODE_BUILD_DIR "/home/neveub/tubex/vnode/")
 set(VNODE_LIB_DIR "${VNODE_BUILD_DIR}/vnodelp/lib")
 
 # VNODE INCLUDE/LINK DIRECTORIES
@@ -60,7 +59,7 @@ include_directories(${VNODE_BUILD_DIR}/vnodelp/include)
 include_directories(${VNODE_BUILD_DIR}/vnodelp/FADBAD++)
 link_directories(${VNODE_LIB_DIR})
 
-set(VNODE_LIBS vnode lapack blas gfortran tubex-solve tubex tubex-rob ibex prim)
+set(VNODE_LIBS vnode lapack blas tubex-solve tubex  ibex prim)
 
 include_directories(vnode_tubex)
 
@@ -215,13 +214,6 @@ target_link_libraries(bvp35c ${VNODE_LIBS} CtcVnodelp)
 target_link_libraries(bvp40 ${VNODE_LIBS} CtcVnodelp)
 
 
-#PA Add
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -msse3")
-add_compile_options(-std=c++11)
-add_definitions(-std=c++11) # CMake 2.8.11 or older
-message("Coucou: ${CMAKE_CXX_FLAGS}")
-#PA Add end
 
 #bubibex
 

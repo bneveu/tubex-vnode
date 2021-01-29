@@ -1,4 +1,4 @@
-Meilleurs resultats pour chaque exemple de BVP
+Meilleurs résultats pour chaque exemple de BVP
 le paramètre ksi rend les problèmes plus raides quand il diminue.
 
 BVP faciles BVP04, BVP15, BVP16
@@ -34,7 +34,7 @@ bvp22c      ksi=0.01      0.2     Vnode1+CIDG+3B-av  0.  0.9  0.9   44.08   0
 variantes du problème 25  
 bvp25a       t0    ksi=0.1       0.1   Vnode1+CIDG+3B     0.  0.9  0.9   6.57   3
 bvp25b       t0    ksi=0.01      0.1   Vnode1+CIDG        0.             22.8  31
-bvp25c             ksi=0.001           resolu sur portes initiales et finales seulement.
+bvp25c             ksi=0.001           résolu sur portes initiales et finales seulement.
 
 variantes du problème 32  (dimension 4)
 bvp32a     ksi=1         0.1     CtcDeriv+3Bd-av   0.99 0.99 0.99    26.3    3
