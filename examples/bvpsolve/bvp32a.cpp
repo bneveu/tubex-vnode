@@ -2,8 +2,7 @@
 // problem Bvpsolve32 (xi=1)
 
 
-#include <iostream>
-#include <vector>
+// #include <iostream>
 #include "tubex.h"
 #include "CtcVnodelp.h"
 #include "tubex-solve.h"

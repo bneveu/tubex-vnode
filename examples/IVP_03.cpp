@@ -50,12 +50,13 @@ int main()
     TubeVector x(domain, 1);
     IntervalVector v(1);
     double init = 2.*atan(exp(-10)*tan(0.5));
-    v[0]=Interval(init);
+    v[0]=Interval(init,init);
 
     x.set(v, 10.); // ini
 
 
     double eps=0.005;
+    //        double eps=0.05;
 
     /* =========== SOLVER =========== */
     Vector epsilon(1, eps);

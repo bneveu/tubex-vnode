@@ -3,7 +3,6 @@
 
 
 #include <iostream>
-#include <vector>
 #include "tubex.h"
 #include "CtcVnodelp.h"
 #include "tubex-solve.h"

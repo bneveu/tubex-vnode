@@ -43,8 +43,7 @@ project(tubex-vnode)
   link_directories(${TUBEX_LIB_DIR})
   link_directories(${TUBEX_SOLVER_LIB_DIR})
   
-  # set(TUBEX_LDFLAGS "tubex" "ibex" "gaol" "gdtoa" "ultim" "prim")
-  set(TUBEX_LDFLAGS "tubex-solver" "tubex" "ibex" "prim" )
+ 
 
 ###########################################################"
 # VNODE VARIABLES
@@ -142,6 +141,12 @@ add_executable(bvp25a examples/bvpsolve/bvp25a.cpp)
 add_executable(bvp25b examples/bvpsolve/bvp25b.cpp)
 add_executable(bvp25c examples/bvpsolve/bvp25c.cpp)
 
+add_executable(bvp26a examples/bvpsolve/bvp26a.cpp)
+add_executable(bvp26b examples/bvpsolve/bvp26b.cpp)
+add_executable(bvp26c examples/bvpsolve/bvp26c.cpp)
+
+
+
 add_executable(bvp32a examples/bvpsolve/bvp32a.cpp)
 add_executable(bvp32b examples/bvpsolve/bvp32b.cpp)
 add_executable(bvp32c examples/bvpsolve/bvp32c.cpp)
@@ -195,6 +200,11 @@ target_link_libraries(bvp22c ${VNODE_LIBS} CtcVnodelp)
 target_link_libraries(bvp25a ${VNODE_LIBS} CtcVnodelp)
 target_link_libraries(bvp25b ${VNODE_LIBS} CtcVnodelp)
 target_link_libraries(bvp25c ${VNODE_LIBS} CtcVnodelp)
+
+target_link_libraries(bvp26a ${VNODE_LIBS} CtcVnodelp)
+target_link_libraries(bvp26b ${VNODE_LIBS} CtcVnodelp)
+target_link_libraries(bvp26c ${VNODE_LIBS} CtcVnodelp)
+
 
 target_link_libraries(bvp32a ${VNODE_LIBS} CtcVnodelp)
 target_link_libraries(bvp32b ${VNODE_LIBS} CtcVnodelp)

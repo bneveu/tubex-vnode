@@ -3,7 +3,7 @@
 
 
 #include <iostream>
-#include <vector>
+
 #include "tubex.h"
 #include "CtcVnodelp.h"
 #include "tubex-solve.h"
@@ -41,8 +41,7 @@ void contract(TubeVector& x, double t0, bool incremental)
     else {c.preserve_slicing(false);
        c.set_ignoreslicing(true);
     }
-    
-   
+       
     c.set_vnode_hmin(1.e-3);
 
     c.Contract(ad,t,tend,n,x,t0,incremental);
