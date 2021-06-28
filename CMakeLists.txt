@@ -133,6 +133,7 @@ add_executable(bvp02b examples/bvpsolve/bvp02b.cpp)
 add_executable(bvp02c examples/bvpsolve/bvp02c.cpp)
 add_executable(bvp02d examples/bvpsolve/bvp02d.cpp)
 
+
 add_executable(bvp22a examples/bvpsolve/bvp22a.cpp)
 add_executable(bvp22b examples/bvpsolve/bvp22b.cpp)
 add_executable(bvp22c examples/bvpsolve/bvp22c.cpp)
@@ -145,7 +146,8 @@ add_executable(bvp26a examples/bvpsolve/bvp26a.cpp)
 add_executable(bvp26b examples/bvpsolve/bvp26b.cpp)
 add_executable(bvp26c examples/bvpsolve/bvp26c.cpp)
 
-
+add_executable(bvp27a examples/bvpsolve/bvp27a.cpp)
+add_executable(bvp27b examples/bvpsolve/bvp27b.cpp)
 
 add_executable(bvp32a examples/bvpsolve/bvp32a.cpp)
 add_executable(bvp32b examples/bvpsolve/bvp32b.cpp)
@@ -193,6 +195,7 @@ target_link_libraries(bvp02b ${VNODE_LIBS} CtcVnodelp)
 target_link_libraries(bvp02c ${VNODE_LIBS} CtcVnodelp)
 target_link_libraries(bvp02d ${VNODE_LIBS} CtcVnodelp)
 
+
 target_link_libraries(bvp22a ${VNODE_LIBS} CtcVnodelp)
 target_link_libraries(bvp22b ${VNODE_LIBS} CtcVnodelp)
 target_link_libraries(bvp22c ${VNODE_LIBS} CtcVnodelp)
@@ -205,6 +208,8 @@ target_link_libraries(bvp26a ${VNODE_LIBS} CtcVnodelp)
 target_link_libraries(bvp26b ${VNODE_LIBS} CtcVnodelp)
 target_link_libraries(bvp26c ${VNODE_LIBS} CtcVnodelp)
 
+target_link_libraries(bvp27a ${VNODE_LIBS} CtcVnodelp)
+target_link_libraries(bvp27b ${VNODE_LIBS} CtcVnodelp)
 
 target_link_libraries(bvp32a ${VNODE_LIBS} CtcVnodelp)
 target_link_libraries(bvp32b ${VNODE_LIBS} CtcVnodelp)
