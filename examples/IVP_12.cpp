@@ -61,7 +61,7 @@ int main()
 
     x.set(v, 0.); // ini
 
-    double epsilon=0.01;
+    double epsilon=0.02;
     Vector eps(1,epsilon);
 
     /* =========== SOLVER =========== */
@@ -69,10 +69,10 @@ int main()
 
     solver.set_refining_fxpt_ratio(2);
     //    solver.set_propa_fxpt_ratio(0.);
-    solver.set_propa_fxpt_ratio(0.);
+    solver.set_propa_fxpt_ratio(0.9);
     //solver.set_var3b_fxpt_ratio(-1);
-    solver.set_var3b_fxpt_ratio(0.99);
-    solver.set_var3b_propa_fxpt_ratio(0.99);
+    solver.set_var3b_fxpt_ratio(0.9);
+    solver.set_var3b_propa_fxpt_ratio(0.9);
 
     solver.set_var3b_timept(1);
     solver.set_trace(1);

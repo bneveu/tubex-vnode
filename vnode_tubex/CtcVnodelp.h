@@ -3,14 +3,14 @@
 
 #include "ibex.h"
 #include "tubex.h"
-#include "tubex_DynCtc.h"
-#include "tubex_Slice.h"
+#include "codac_DynCtc.h"
+#include "codac_Slice.h"
 #include "vnode.h"
 #include <vector>
 
 using namespace ibex;
 
-namespace tubex {
+namespace codac {
     typedef std::vector<std::pair<double, ibex::IntervalVector>> Vstate;
 
     class CtcVnodelp : public DynCtc {
@@ -31,6 +31,7 @@ namespace tubex {
         void Contract(vnodelp::AD *ad,double t,double tend,int n, Tube &x, double t0, bool incremental);
 
         void Contract(vnodelp::AD *ad,double t,double tend,int n, TubeVector &x,double t0, bool incremental);
+         void  contract(std::vector<Domain*>& v_domains);
     private:
 
         void fill_state_vector(Tube &x,vector<double> &time_gate ,vector<ibex::IntervalVector>& si, const int& i);

@@ -1,6 +1,6 @@
 #include "CtcVnodelp.h"
-//#include <vector>
-namespace tubex {
+
+namespace codac {
 
     CtcVnodelp::CtcVnodelp() : DynCtc() {
         //default Vnode order is 20, we set it here to 11
@@ -153,7 +153,7 @@ namespace tubex {
     }
 
     void CtcVnodelp::fill_state_vector(Tube &x, vector<double> &time_gate, vector<ibex::IntervalVector> &si, const int &i) {
-        tubex::Slice *x_slice = x.first_slice();
+        codac::Slice *x_slice = x.first_slice();
         int k = 0;
         while (x_slice != NULL) {
             Interval outgate = x_slice->output_gate();
@@ -359,4 +359,6 @@ namespace tubex {
             x = (fwd_x&bwd_x) & x;
 
     }
+
+  void  CtcVnodelp::contract(std::vector<Domain*>& v_domains) {;}
 }

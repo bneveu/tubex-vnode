@@ -9,7 +9,7 @@ project(tubex-vnode)
 ################################################################################
 
   set(IBEX_ROOT "/home/neveub/tubex/ibex-lib/install") # Install path of ibex lib
-  set(TUBEX_ROOT "/home/neveub/tubex/tubex-lib/")
+  set(TUBEX_ROOT "/home/neveub/tubex/codac-lib/")
   set(TUBEX_SOLVER_ROOT "/home/neveub/tubex/tubex-solve/")
  
   set(IBEX_LIB_DIR "${IBEX_ROOT}/lib"
@@ -43,7 +43,11 @@ project(tubex-vnode)
   link_directories(${TUBEX_LIB_DIR})
   link_directories(${TUBEX_SOLVER_LIB_DIR})
   
- 
+ find_package(Eigen3 REQUIRED NO_MODULE)
+  message(STATUS "Found Eigen3 version ${EIGEN3_VERSION}")
+  add_definitions(${EIGEN3_DEFINITIONS})
+  include_directories(${EIGEN3_INCLUDE_DIRS})
+add_definitions(-Dtubex=codac)
 
 ###########################################################"
 # VNODE VARIABLES
@@ -58,7 +62,7 @@ include_directories(${VNODE_BUILD_DIR}/vnodelp/include)
 include_directories(${VNODE_BUILD_DIR}/vnodelp/FADBAD++)
 link_directories(${VNODE_LIB_DIR})
 
-set(VNODE_LIBS vnode lapack blas tubex-solve tubex  ibex prim)
+set(VNODE_LIBS vnode lapack blas tubex-solve codac  ibex prim)
 
 include_directories(vnode_tubex)
 

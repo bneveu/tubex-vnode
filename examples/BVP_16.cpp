@@ -60,10 +60,12 @@ int main()
     TubeVector x(domain, 2);
     IntervalVector v(2);
     v[0]=Interval(0.,0.);
-    v[1]=Interval(-1.e8,1.e8);
+    v[1]=Interval(-1.e100,1.e100);
+    //v[1]=Interval(-10,10);
     x.set(v, 0.); // ini
-    v[0]=Interval(-1.e8,1.e8);
-    v[1]=Interval(-1,-1);
+    v[0]=Interval(-1.e100,1.e100);
+    //    v[0]=Interval(-10,10);
+    v[1]=Interval(-10,-10);
     x.set(v,pi);
     double eps=0.001;
     //double eps=0.1;
@@ -85,10 +87,10 @@ int main()
     solver.set_refining_mode(0);
     solver.set_bisection_timept(3);
     solver.set_contraction_mode(4);
-    solver.set_stopping_mode(0);
+    solver.set_stopping_mode(2);
     solver.set_var3b_external_contraction(true);
-    //    list<TubeVector> l_solutions = solver.solve(x, &contract);
-    list<TubeVector> l_solutions = solver.solve(x, f, &contract);
+    list<TubeVector> l_solutions = solver.solve(x, &contract);
+    // list<TubeVector> l_solutions = solver.solve(x, f, &contract);
     //   cout << "nb sol " << l_solutions.size() << endl;
 
     double t_max_diam;

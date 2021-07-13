@@ -107,13 +107,13 @@ int main()
     solver.set_refining_mode(2);
     solver.set_bisection_timept(3);
     solver.set_contraction_mode(2);
-    solver.set_stopping_mode(0);
+    solver.set_stopping_mode(2);
     solver.set_var3b_external_contraction(true);
     cout.precision(6);
     std::ofstream Out("err.txt");
     std::streambuf* OldBuf = std::cerr.rdbuf(Out.rdbuf());
-    //list<TubeVector> l_solutions = solver.solve(x, &contract);
-    list<TubeVector> l_solutions = solver.solve(x,f, &contract);
+    list<TubeVector> l_solutions = solver.solve(x, &contract);
+    // list<TubeVector> l_solutions = solver.solve(x,f, &contract);
     //list<TubeVector> l_solutions = solver.solve(x,f);
     std::cerr.rdbuf(OldBuf);
     cout << l_solutions.front() << endl;
